@@ -1,0 +1,34 @@
+# tye application configuration file
+# read all about it at https://github.com/dotnet/tye
+#
+# when you've given us a try, we'd love to know what you think:
+#    https://aka.ms/AA7q20u
+#
+name: blazorapp1
+
+services:
+- name: blazorapp1
+  project: Server/BlazorApp1.Server.csproj
+  bindings:
+  - name: http
+    protocol: http
+    port: 5000
+  - name: https
+    protocol: https
+    port: 5001
+
+- name: sqlserver
+  image: mcr.microsoft.com/azure-sql-edge:latest
+  env:
+  - name: MSSQL_SA_PASSWORD
+    value: P@ssw0rd
+  - name: MSSQL_PID
+    value: Developer
+  - name: ACCEPT_EULA
+    value: "Y"
+  bindings:
+    - port: 1433
+      connectionString: Server=${host},${port};User Id=sa;Password=${env:MSSQL_SA_PASSWORD};Database=BlazorApp1;
+  volumes:
+    - source: .data/sql-edge
+      target: /var/opt/mssql/data
