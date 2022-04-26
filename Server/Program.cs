@@ -9,6 +9,7 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Identity;
 using BlazorApp1.Server.Hubs;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,8 @@ builder.Services.AddOpenApiDocument(document =>
 
             document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
+
+builder.Services.AddMediatR(typeof(Program));
 
 // builder.Services.AddMassTransit(x =>
 // {
