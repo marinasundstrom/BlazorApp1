@@ -12,6 +12,8 @@ Provides the interface to register and log in users.
 
 The app stores individual accounts in its database.
 
+UI can be scaffolded in Visual Studio, or using the .NET CLI.
+
 ## External providers
 
 Users can be authenticated via external authentications providers. (Google, Azure AD etcl) 
