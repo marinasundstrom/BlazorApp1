@@ -11,6 +11,8 @@
 
 <MudPaper Elevation="1" Class="px-4 py-4">
     <EditForm Model="@this" OnValidSubmit="OnSubmit">
+        <DataAnnotationsValidator />
+
         <MudTextField Variant="Variant.Outlined" Label="Your name" @bind-Value="Name" For="() => Name"></MudTextField>
 
         <MudButton Class="mt-2" Variant="Variant.Filled" ButtonType="ButtonType.Submit">Say hi</MudButton>
