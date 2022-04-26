@@ -32,3 +32,22 @@ services:
   volumes:
     - source: .data/sql-edge
       target: /var/opt/mssql/data
+
+# - name: redis
+#   image: redis
+#   bindings:
+#   - port: 6379
+#     connectionString: "${host}:${port}" 
+    
+# - name: redis-cli
+#   image: redis
+#   args: "redis-cli -h redis MONITOR"
+
+# - name: rabbitmq
+#   image: rabbitmq:3-management
+#   bindings:
+#     - name: rabbit
+#       port: 5672
+#       protocol: rabbitmq
+#     - name: management
+#       port: 15672

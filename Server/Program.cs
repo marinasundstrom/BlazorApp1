@@ -34,30 +34,30 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
-    // .AddGoogle(googleOptions =>
-    // {
-    //     googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    //     googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    // });
-    // .AddOpenIdConnect("aad", "Azure AD", options =>
-    // {
-    //     options.SignInScheme = IdentityConstants.ExternalScheme;
-    //     options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-    // 
-    //     var tenantId = builder.Configuration["Authentication:AzureAd:TenantId"];
-    // 
-    //     options.Authority = $"https://login.windows.net/{tenantId}";
-    //     options.ClientId = builder.Configuration["Authentication:AzureAd:ApplicationId"];
-    //     options.ResponseType = OpenIdConnectResponseType.IdToken;
-    //     options.CallbackPath = "/signin-aad";
-    //     options.SignedOutCallbackPath = "/signout-callback-aad";
-    //     options.RemoteSignOutPath = "/signout-aad";
-    //     options.TokenValidationParameters = new TokenValidationParameters
-    //     {
-    //         NameClaimType = "name",
-    //         RoleClaimType = "role"
-    //     };
-    // });
+// .AddGoogle(googleOptions =>
+// {
+//     googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+//     googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+// });
+// .AddOpenIdConnect("aad", "Azure AD", options =>
+// {
+//     options.SignInScheme = IdentityConstants.ExternalScheme;
+//     options.SignOutScheme = IdentityServerConstants.SignoutScheme;
+// 
+//     var tenantId = builder.Configuration["Authentication:AzureAd:TenantId"];
+// 
+//     options.Authority = $"https://login.windows.net/{tenantId}";
+//     options.ClientId = builder.Configuration["Authentication:AzureAd:ApplicationId"];
+//     options.ResponseType = OpenIdConnectResponseType.IdToken;
+//     options.CallbackPath = "/signin-aad";
+//     options.SignedOutCallbackPath = "/signout-callback-aad";
+//     options.RemoteSignOutPath = "/signout-aad";
+//     options.TokenValidationParameters = new TokenValidationParameters
+//     {
+//         NameClaimType = "name",
+//         RoleClaimType = "role"
+//     };
+// });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -80,6 +80,25 @@ builder.Services.AddOpenApiDocument(document =>
 
             document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
+
+        // builder.Services.AddMassTransit(x =>
+        // {
+        //     x.SetKebabCaseEndpointNameFormatter();
+        // 
+        //     x.AddConsumers(typeof(Program).Assembly);
+        // 
+        //     x.UsingRabbitMq((context, cfg) =>
+        //     {
+        //         cfg.ConfigureEndpoints(context);
+        //     });
+        // })
+        // .AddMassTransitHostedService(true)
+        // .AddGenericRequestClient();
+
+        // builder.Services.AddStackExchangeRedisCache(o =>
+        // {
+        //     o.Configuration = Configuration.GetConnectionString("redis");
+        // });
 
 var app = builder.Build();
 
