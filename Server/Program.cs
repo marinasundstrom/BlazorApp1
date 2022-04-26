@@ -81,24 +81,24 @@ builder.Services.AddOpenApiDocument(document =>
             document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 
-        // builder.Services.AddMassTransit(x =>
-        // {
-        //     x.SetKebabCaseEndpointNameFormatter();
-        // 
-        //     x.AddConsumers(typeof(Program).Assembly);
-        // 
-        //     x.UsingRabbitMq((context, cfg) =>
-        //     {
-        //         cfg.ConfigureEndpoints(context);
-        //     });
-        // })
-        // .AddMassTransitHostedService(true)
-        // .AddGenericRequestClient();
+// builder.Services.AddMassTransit(x =>
+// {
+//     x.SetKebabCaseEndpointNameFormatter();
+// 
+//     x.AddConsumers(typeof(Program).Assembly);
+// 
+//     x.UsingRabbitMq((context, cfg) =>
+//     {
+//         cfg.ConfigureEndpoints(context);
+//     });
+// })
+// .AddMassTransitHostedService(true)
+// .AddGenericRequestClient();
 
-        // builder.Services.AddStackExchangeRedisCache(o =>
-        // {
-        //     o.Configuration = Configuration.GetConnectionString("redis");
-        // });
+// builder.Services.AddStackExchangeRedisCache(o =>
+// {
+//     o.Configuration = Configuration.GetConnectionString("redis");
+// });
 
 var app = builder.Build();
 
