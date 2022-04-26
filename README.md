@@ -19,17 +19,20 @@ The app comes with this:
   * Support for external providers (Google, Azure AD etc.)
 * SignalR
 * Localization
+* CQRS with MediatR
 * .NET Tye - Development orchestrator
+
+There is also a Worker service, using MassTransit with RabbitMQ as transport.
 
 ## Prerequisites
 
-The project requires these dependencies to be built:
+The project requires these dependencies to be built and to run:
 
 * [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * [.NET Tye CLI tools](https://github.com/dotnet/tye)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-And then an IDE of your preference, such as [VS Code](https://code.visualstudio.com/), full Visual Studio for Mac or Windows, or Rider..
+And then an IDE of your preference, such as [VS Code](https://code.visualstudio.com/), full Visual Studio for Mac or Windows, or Rider.
 
 ## Run the app
 
