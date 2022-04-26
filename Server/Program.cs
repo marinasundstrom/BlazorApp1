@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using BlazorApp1.Server;
 using BlazorApp1.Server.Data;
@@ -10,6 +9,7 @@ using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Identity;
 using BlazorApp1.Server.Hubs;
 using MediatR;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,19 +84,19 @@ builder.Services.AddOpenApiDocument(document =>
 
 builder.Services.AddMediatR(typeof(Program));
 
-// builder.Services.AddMassTransit(x =>
-// {
-//     x.SetKebabCaseEndpointNameFormatter();
-// 
-//     x.AddConsumers(typeof(Program).Assembly);
-// 
-//     x.UsingRabbitMq((context, cfg) =>
-//     {
-//         cfg.ConfigureEndpoints(context);
-//     });
-// })
-// .AddMassTransitHostedService(true)
-// .AddGenericRequestClient();
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+
+    x.AddConsumers(typeof(Program).Assembly);
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+})
+.AddMassTransitHostedService(true)
+.AddGenericRequestClient();
 
 // builder.Services.AddStackExchangeRedisCache(o =>
 // {

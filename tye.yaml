@@ -17,6 +17,16 @@ services:
     protocol: https
     port: 5001
 
+- name: worker
+  project: Worker/Worker.csproj
+  bindings:
+  - name: http
+    protocol: http
+    port: 5020
+  - name: https
+    protocol: https
+    port: 5021
+
 - name: sqlserver
   image: mcr.microsoft.com/azure-sql-edge:latest
   env:
@@ -43,11 +53,11 @@ services:
 #   image: redis
 #   args: "redis-cli -h redis MONITOR"
 
-# - name: rabbitmq
-#   image: rabbitmq:3-management
-#   bindings:
-#     - name: rabbit
-#       port: 5672
-#       protocol: rabbitmq
-#     - name: management
-#       port: 15672
+- name: rabbitmq
+  image: rabbitmq:3-management
+  bindings:
+    - name: rabbit
+      port: 5672
+      protocol: rabbitmq
+    - name: management
+      port: 15672
