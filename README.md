@@ -51,4 +51,6 @@ $ tye run --watch
 
 Tye is an orchestrator that can be used to develop distributed applications. It orchestrates services - projects and containers, without developers having to think about configuration. Declare dependencies and run. It also handles *service discovery*.
 
+Services are declared in ```tye.yaml```.
+
 It also makes it easy to deploy services to Kubernetes.
