@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using BlazorApp1.Server.Hubs;
 using MediatR;
 using MassTransit;
+using BlazorApp1.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,8 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSignalR();
 
 // Register the Swagger services
@@ -83,6 +86,9 @@ builder.Services.AddOpenApiDocument(document =>
         });
 
 builder.Services.AddMediatR(typeof(Program));
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddMassTransit(x =>
 {

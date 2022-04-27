@@ -4,8 +4,6 @@ using MassTransit;
 
 using Microsoft.AspNetCore.SignalR;
 
-using Worker.Contracts;
-
 namespace BlazorApp1.Server.Consumers;
 
 public class ResponseConsumer : IConsumer<Worker.Contracts.WorkerResponse>

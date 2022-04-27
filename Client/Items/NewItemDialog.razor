@@ -1,0 +1,44 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inject IStringLocalizer<NewItemDialog> T
+
+<div style="width: 350px; max-width: 350px;">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+
+        <DataAnnotationsValidator />
+        <MudDialog>
+            <DialogContent>
+                <MudTextField Label="@T["Name"]" HelperText="Max. 60 characters"
+                              @bind-Value="model.Name" For="@(() => model.Name)" />
+                <MudTextField Label="@T["Description"]" Lines="3" Class="mt-3"
+                              @bind-Value="model.Description" For="@(() => model.Description)" />
+            </DialogContent>
+
+            <DialogActions>
+                <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="() => MudDialog.Cancel()">@T["Cancel"]</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Text" Color="Color.Primary">@T["Create"]</MudButton>
+            </DialogActions>
+        </MudDialog>
+
+    </EditForm>
+</div>
+
+@code {
+    FormModel model = new FormModel();
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(model));
+
+    void Cancel() => MudDialog.Cancel();
+
+    public class FormModel
+    {
+        [Required]
+        [StringLength(60, ErrorMessage = "Name length can't be more than 8.")]
+        public string Name { get; set; } = null!;
+
+        [Required]
+        [StringLength(240, ErrorMessage = "Description length can't be more than 240.")]
+        public string Description { get; set; } = null!;
+    }
+}

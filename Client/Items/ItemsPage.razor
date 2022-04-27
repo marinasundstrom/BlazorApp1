@@ -1,0 +1,140 @@
+﻿@page "/items"
+@using BlazorApp1.Client.Services
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<ItemsPage> T
+@inject IItemsClient ItemsClient
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject ICurrentUserService CurrentUserService
+
+<PageTitle>@T["Items"]</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">@T["Items"]</MudText>
+
+<AuthorizeView>
+    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-2">
+        @T["NewItem"]
+    </MudButton>
+    
+    <MudCheckBox Label="@T["JustMyItems"]" CheckedChanged="new Func<bool, Task>(OnJustMyItemsCheckedChanged)" Checked="justMyItems" />
+</AuthorizeView>
+
+
+<MudTable T="ItemDto" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">@T["Header_Description"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
+        @* <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">@T["Header_LastModified"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">@T["Header_LastModifiedBy"]</MudTableSortLabel></MudTh> *@
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@T["Header_Name"]">@context.Name</MudTd>
+        <MudTd DataLabel="@T["Header_Description"]">@context.Description</MudTd>
+        <MudTd DataLabel="@T["Header_Created"]">@context.Created.ToString("g")</MudTd>
+        <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy</MudTd>
+        @* <MudTd DataLabel="@T["Header_LastModified"]">@context.LastModified?.ToString("g")</MudTd>
+        <MudTd DataLabel="@T["Header_LastModifiedBy"]">@context.LastModifiedBy</MudTd> *@
+        <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>@T["NoRecordsFound"]</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>@T["Loading"]</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="@T["RowsPerPage"]" />
+    </PagerContent>
+</MudTable>
+
+@code {
+    MudTable<ItemDto> table = null!;
+    string? createdBy;
+    bool justMyItems;
+
+    private async Task<TableData<ItemDto>> ServerReload(TableState state)
+    {
+        try
+        {
+            var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, createdBy,
+                state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Client.SortDirection.Asc : Client.SortDirection.Desc);
+
+            return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+
+        return null!;
+    }
+
+    private async Task OnJustMyItemsCheckedChanged(bool isChecked)
+    {
+        if (isChecked)
+        {
+            createdBy = await CurrentUserService.GetUserId();
+        }
+        else
+        {
+            createdBy = null;
+        }
+
+        await table.ReloadServerData();
+
+        justMyItems = isChecked;
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)
+    {
+        NavigationManager.NavigateTo($"/items/{args.Item.Id}");
+    }
+
+    private async Task OpenDialog()
+    {
+        var dialogReference = DialogService.Show<NewItemDialog>(T["NewItem"]);
+
+        var result = await dialogReference.Result;
+        var model = (NewItemDialog.FormModel)result.Data;
+
+        if (result.Cancelled)
+            return;
+
+        try
+        {
+            await ItemsClient.CreateItemAsync(new CreateItemDto()
+                {
+                    Name = model.Name,
+                    Description = model.Description
+                });
+
+            await table.ReloadServerData();
+        }
+        catch (Exception exc)
+        {
+            Snackbar.Add(exc.Message.ToString(), Severity.Error);
+        }
+    }
+
+    private async Task DeleteItem(ItemDto item)
+    {
+        try
+        {
+            var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
+           
+            if (result.GetValueOrDefault())
+            {
+                await ItemsClient.DeleteItemAsync(item.Id);
+
+                await table.ReloadServerData();
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

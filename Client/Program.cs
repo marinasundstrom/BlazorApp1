@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using BlazorApp1.Client;
 using MudBlazor.Services;
-using Microsoft.AspNetCore.Components;
 using System.Globalization;
 using Microsoft.JSInterop;
+using BlazorApp1.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -24,12 +24,13 @@ builder.Services.AddLocalization();
 builder.Services.AddApiAuthorization()
     .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
 
-builder.Services.AddHttpClient<BlazorApp1.Client.IWeatherForecastClient>("BlazorApp1.ServerAPI", (sp, httpClient) =>
-{
-    var navigationManager = sp.GetRequiredService<NavigationManager>();
-    httpClient.BaseAddress = new Uri(navigationManager.BaseUri);
-})
-.AddTypedClient<IWeatherForecastClient>((http, sp) => new WeatherForecastClient(http));
+builder.Services.AddHttpClient<BlazorApp1.Client.IWeatherForecastClient>("BlazorApp1.ServerAPI")
+    .AddTypedClient<IWeatherForecastClient>((http, sp) => new WeatherForecastClient(http));
+
+builder.Services.AddHttpClient<BlazorApp1.Client.IItemsClient>("BlazorApp1.ServerAPI")
+    .AddTypedClient<IItemsClient>((http, sp) => new ItemsClient(http));
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 

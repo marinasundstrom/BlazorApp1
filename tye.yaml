@@ -61,3 +61,15 @@ services:
       protocol: rabbitmq
     - name: management
       port: 15672
+
+- name: smtp4dev
+  image: rnwood/smtp4dev:prerelease
+  bindings:
+    - name: ui
+      port: 3000
+      containerPort: 80
+      protocol: http
+    - name: smtp
+      port: 25
+      containerPort: 25
+      protocol: smtp

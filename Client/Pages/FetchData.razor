@@ -15,7 +15,7 @@ else
 {
     <MudTable Items="forecasts" Hover="true" SortLabel="@T["SortBy"]" Elevation="0">
         <HeaderContent>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">@T["Date"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="MudBlazor.SortDirection.Ascending" SortBy="new Func<WeatherForecast, object>(x=>x.Date)">@T["Date"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureC)">@T["TempC"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.TemperatureF)">@T["TempF"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">@T["Summary"]</MudTableSortLabel></MudTh>

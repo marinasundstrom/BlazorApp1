@@ -3,7 +3,6 @@ using IdentityModel;
 using BlazorApp1.Server.Data;
 using BlazorApp1.Server.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Server;
 
