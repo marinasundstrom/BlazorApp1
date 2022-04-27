@@ -6,6 +6,8 @@
         OnClick="@(async (e) => await DrawerToggleCallback.InvokeAsync())" />
     <MudSpacer />
     <LoginDisplay />
+    <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" Color="Color.Inherit" Edge="Edge.Start"
+        OnClick="@(async (e) => await DarkModeToggleCallback.InvokeAsync())" />
     <MudMenu Dense="true" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter"
         PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
         <ActivatorContent>
@@ -25,6 +27,12 @@
 @code {
     [Parameter]
     public EventCallback DrawerToggleCallback { get; set; }
+
+    [Parameter]
+    public EventCallback DarkModeToggleCallback { get; set; }
+
+    [Parameter]
+    public bool IsDarkMode { get; set; }
 
     async Task ChangeLocale()
     {
