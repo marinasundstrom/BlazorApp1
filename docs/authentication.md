@@ -10,9 +10,9 @@ Provides an OIDC endpoint that utilizes JWTs.
 
 Provides the interface to register and log in users.
 
-The app stores individual accounts in its database.
+The app stores individual accounts in its database. Using Entity Framework Core.
 
-UI can be scaffolded in Visual Studio, or using the .NET CLI.
+If you want to override the default UI, views can be scaffolded in Visual Studio, or using the .NET CLI.
 
 ## External providers
 
