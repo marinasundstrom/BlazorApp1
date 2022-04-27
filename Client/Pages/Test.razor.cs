@@ -69,7 +69,7 @@ namespace BlazorApp1.Client.Pages
 
         Task OnReponded(string message)
         {
-            Snackbar.Add(message);
+            Snackbar.Add(message, Severity.Info);
             StateHasChanged();
             return Task.CompletedTask;
         }
