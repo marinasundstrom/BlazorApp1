@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthTest.Server.Controllers;
+namespace AuthTest.Server.WeatherForecasts;
 
 [Authorize]
 [ApiController]
