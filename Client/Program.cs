@@ -6,6 +6,7 @@ using MudBlazor.Services;
 using System.Globalization;
 using Microsoft.JSInterop;
 using BlazorApp1.Client.Services;
+using Blazored.LocalStorage;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -21,6 +22,10 @@ builder.Services.AddMudServices();
 
 builder.Services.AddLocalization();
 
+builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddServices();
+
 builder.Services.AddApiAuthorization()
     .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
 
@@ -30,7 +35,7 @@ builder.Services.AddHttpClient<BlazorApp1.Client.IWeatherForecastClient>("Blazor
 builder.Services.AddHttpClient<BlazorApp1.Client.IItemsClient>("BlazorApp1.ServerAPI")
     .AddTypedClient<IItemsClient>((http, sp) => new ItemsClient(http));
 
-builder.Services.AddServices();
+
 
 var app = builder.Build();
 

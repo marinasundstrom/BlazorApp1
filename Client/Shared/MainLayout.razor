@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject IDialogService DialogService
 @inject IStringLocalizer<MainLayout> T
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <MudThemeProvider @bind-IsDarkMode="_isDarkMode" Theme="_theme" />
 <MudDialogProvider />
@@ -25,14 +26,21 @@
     private MudTheme _theme = new();
     bool _drawerOpen = true;
     bool _isDarkMode = false;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _isDarkMode = (await LocalStorage.GetItemAsync<bool?>("isDarkMode")).GetValueOrDefault();
+    }
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
-    void DarkModeToggle()
+    async Task DarkModeToggle()
     {
         _isDarkMode = !_isDarkMode;
+
+       await LocalStorage.SetItemAsync("isDarkMode", _isDarkMode);
     }
 }
