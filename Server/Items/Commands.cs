@@ -6,9 +6,9 @@ using BlazorApp1.Server.Models;
 
 namespace BlazorApp1.Server.Items.Commands;
 
-public record CreateItemCommand(string Name, string Description) : IRequest
+public record CreateItemCommand(string Name, string Description) : IRequest<Result<Unit, Exception>>
 {
-    public class Handler : IRequestHandler<CreateItemCommand>
+    public class Handler : IRequestHandler<CreateItemCommand, Result<Unit, Exception>>
     {
         private readonly ApplicationDbContext context;
         private readonly IMediator mediator;
@@ -19,7 +19,7 @@ public record CreateItemCommand(string Name, string Description) : IRequest
             this.mediator = mediator;
         }
 
-        public async Task<Unit> Handle(CreateItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Unit, Exception>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
         {
             var item = new Item() {
                 Name = request.Name,
@@ -32,7 +32,7 @@ public record CreateItemCommand(string Name, string Description) : IRequest
 
             await mediator.Publish(new ItemCreatedEvent(item.Id));
 
-            return Unit.Value;
+            return new Result<Unit, Exception>.Ok(Unit.Value);
         }
     }
 }

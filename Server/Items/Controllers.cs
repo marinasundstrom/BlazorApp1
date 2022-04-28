@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using BlazorApp1.Server.Items.Commands;
 using BlazorApp1.Server.Items.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 
 namespace BlazorApp1.Server.Items.Controllers;
 
@@ -21,9 +20,14 @@ public class ItemsController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ItemsResult<ItemDto>> GetItemsAsync(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
+    public async Task<ActionResult<ItemsResult<ItemDto>>> GetItemsAsync(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
     {
-        return await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
+        var result = await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
+        if(result is Result<ItemsResult<ItemDto>, Exception>.Error(Exception Error)) 
+        {
+            return BadRequest();
+        }
+        return Ok((ItemsResult<ItemDto>)result);
     }
 
     [HttpGet("{id}")]
