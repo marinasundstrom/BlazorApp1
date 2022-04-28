@@ -11,6 +11,7 @@ using BlazorApp1.Server.Hubs;
 using MediatR;
 using MassTransit;
 using BlazorApp1.Server.Services;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +68,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSignalR();
+
+//builder.Services.AddScoped<IUserIdProvider, EmailBasedUserIdProvider>();
 
 // Register the Swagger services
 builder.Services.AddOpenApiDocument(document =>

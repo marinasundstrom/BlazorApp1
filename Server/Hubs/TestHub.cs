@@ -17,6 +17,15 @@ public class TestHub : Hub<ITestClient>
         _publishEndpoint = publishEndpoint;
     }
 
+    public override async Task OnConnectedAsync()
+    {
+        await base.OnConnectedAsync();
+
+        //var userId = Context.UserIdentifier;
+
+        //await Groups.AddToGroupAsync(Context.ConnectionId, "MyGroup");
+    }
+
     public async Task SayHi(string yourName) 
     {
         await _publishEndpoint.Publish(new WorkerMessage(yourName));
