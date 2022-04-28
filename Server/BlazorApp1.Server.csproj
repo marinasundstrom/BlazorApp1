@@ -7,6 +7,10 @@
 		<UserSecretsId>BlazorApp1.Server-09602B2C-AD35-43BA-9131-D735A13CBF00</UserSecretsId>
 	</PropertyGroup>
 
+    <PropertyGroup>
+        <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+    </PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.4" />
 	</ItemGroup>

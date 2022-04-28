@@ -51,9 +51,9 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
     }
 }
 
-public record GetItemQuery(string Id) : IRequest<ItemDto>
+public record GetItemQuery(string Id) : IRequest<ItemDto?>
 {
-    public class Handler : IRequestHandler<GetItemQuery, ItemDto>
+    public class Handler : IRequestHandler<GetItemQuery, ItemDto?>
     {
         private readonly ApplicationDbContext context;
 
@@ -62,7 +62,7 @@ public record GetItemQuery(string Id) : IRequest<ItemDto>
             this.context = context;
         }
 
-        public async Task<ItemDto> Handle(GetItemQuery request, CancellationToken cancellationToken)
+        public async Task<ItemDto?> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
             var item = await context.Items
                 .AsNoTracking()
@@ -73,11 +73,7 @@ public record GetItemQuery(string Id) : IRequest<ItemDto>
                 //.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
-            if (item is null) {
-                throw new Exception();
-            }
-
-            return item.ToDto();
+            return item?.ToDto();
         }
     }
 }

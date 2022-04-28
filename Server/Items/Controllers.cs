@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BlazorApp1.Server.Items.Commands;
 using BlazorApp1.Server.Items.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BlazorApp1.Server.Items.Controllers;
 
@@ -27,9 +28,17 @@ public class ItemsController : ControllerBase
 
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public async Task<ItemDto> GetItemAsync(string id)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<ActionResult<ItemDto>> GetItemAsync(string id)
     {
-        return await mediator.Send(new GetItemQuery(id));
+        var item = await mediator.Send(new GetItemQuery(id));
+        if(item is null) 
+        {
+            return NotFound();
+        }
+        return Ok(item);
     }
 
     [HttpPost]
