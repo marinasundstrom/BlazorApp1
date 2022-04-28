@@ -25,17 +25,7 @@ namespace BlazorApp1.Client.Pages
             {
                 hubConnection = new HubConnectionBuilder().WithUrl($"{NavigationManager.BaseUri}hubs/test", options =>
                 {
-                    options.AccessTokenProvider = async () =>
-                    {
-                        var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions()
-                        {Scopes = new[]{"BlazorApp1.ServerAPI"}});
-                        if (results.TryGetToken(out var accessToken))
-                        {
-                            return accessToken.Value;
-                        }
-
-                        return null !;
-                    };
+                    options.AccessTokenProvider = async () => await AccessTokenProvider.GetAccessTokenAsync();
                 }).WithAutomaticReconnect().Build();
                 hubConnection.On<string>("Responded", OnReponded);
                 hubConnection.Closed += (error) =>

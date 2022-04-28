@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace BlazorApp1.Client.Services;
+namespace BlazorApp1.Client.Authentication;
 
 public class CurrentUserService : ICurrentUserService
 {

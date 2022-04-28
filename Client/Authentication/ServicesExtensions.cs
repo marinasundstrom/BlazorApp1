@@ -1,8 +1,8 @@
-﻿namespace BlazorApp1.Client.Services;
+﻿namespace BlazorApp1.Client.Authentication;
 
 public static class ServicesExtensions
 {
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IAccessTokenProvider, AccessTokenProvider>();

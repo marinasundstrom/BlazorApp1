@@ -5,9 +5,9 @@ using BlazorApp1.Client;
 using MudBlazor.Services;
 using System.Globalization;
 using Microsoft.JSInterop;
-using BlazorApp1.Client.Services;
 using Blazored.LocalStorage;
 using BlazorApp1.Client.Theming;
+using BlazorApp1.Client.Authentication;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,7 +25,7 @@ builder.Services.AddLocalization();
 
 builder.Services.AddBlazoredLocalStorage();
 
-builder.Services.AddServices();
+builder.Services.AddAuthenticationServices();
 
 builder.Services.AddThemeServices();
 

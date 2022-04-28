@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace BlazorApp1.Client.Services;
+namespace BlazorApp1.Client.Authentication;
 
 public class AccessTokenProvider : IAccessTokenProvider
 {
