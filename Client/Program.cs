@@ -7,6 +7,7 @@ using System.Globalization;
 using Microsoft.JSInterop;
 using BlazorApp1.Client.Services;
 using Blazored.LocalStorage;
+using BlazorApp1.Client.Theming;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,6 +26,8 @@ builder.Services.AddLocalization();
 builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddServices();
+
+builder.Services.AddThemeServices();
 
 builder.Services.AddApiAuthorization()
     .AddAccountClaimsPrincipalFactory<RolesClaimsPrincipalFactory>();
