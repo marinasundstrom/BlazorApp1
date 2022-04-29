@@ -1,0 +1,56 @@
+﻿@page "/items/{Id}"
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<ItemsPage> T
+@inject IItemsClient ItemsClient
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject ICurrentUserService CurrentUserService
+
+@if (item is null)
+{
+    if (loading)
+    {
+        <p>Loading...</p>
+    }
+    else if (error)
+    {
+        <p>Error</p>
+    }
+}
+else
+{
+    <PageTitle>@item.Name</PageTitle>
+
+    <MudText Typo="Typo.h3" GutterBottom="true">@item.Name</MudText>
+
+    <MudText Typo="Typo.caption" GutterBottom="true">Created by @item.CreatedBy at @item.Created.ToString("g")</MudText>
+
+
+    <MudText Typo="Typo.body1">@item.Description</MudText>
+}
+
+@code {
+    ItemDto? item;
+    bool loading;
+    bool error;
+
+    [Parameter] public string Id { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loading = true;
+
+        try
+        {
+            item = await ItemsClient.GetItemAsync(Id);
+        }
+        catch (Exception exc)
+        {
+            error = true;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+}
