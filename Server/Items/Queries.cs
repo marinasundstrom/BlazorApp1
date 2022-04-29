@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Server.Items.Queries;
 
-public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? SortBy = null, SortDirection? SortDirection = null) : IRequest<Result<ItemsResult<ItemDto>, Exception>>
+public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? SortBy = null, SortDirection? SortDirection = null) : IRequest<Result<PagedResult<ItemDto>, Exception>>
 {
-    public class Handler : IRequestHandler<GetItemsQuery, Result<ItemsResult<ItemDto>, Exception>>
+    public class Handler : IRequestHandler<GetItemsQuery, Result<PagedResult<ItemDto>, Exception>>
     {
         private readonly ApplicationDbContext context;
 
@@ -16,7 +16,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
             this.context = context;
         }
 
-        public async Task<Result<ItemsResult<ItemDto>, Exception>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PagedResult<ItemDto>, Exception>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Items
                 .AsNoTracking();
@@ -46,7 +46,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
                 .Select(item => item.ToDto())
                 .ToListAsync(cancellationToken);
 
-            return new Result<ItemsResult<ItemDto>, Exception>.Ok(new ItemsResult<ItemDto>(items, totalCount));
+            return new Result<PagedResult<ItemDto>, Exception>.Ok(new PagedResult<ItemDto>(items, request.Page, totalCount));
         }
     }
 }
