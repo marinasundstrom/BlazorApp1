@@ -28,23 +28,23 @@ public class ThemeManager : IDisposable
         if (PreferredColorScheme == null)
         {
             CurrentColorScheme = e.ColorScheme;
-            ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(e.ColorScheme));
+
+            RaiseCurrentColorSchemeChanged();
         }
     }
-    
+
+    private void RaiseCurrentColorSchemeChanged()
+    {
+        ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
+    }
+
     public ColorScheme CurrentColorScheme { get; private set; }
 
     public ColorScheme? PreferredColorScheme
     {
-        get
-        {
-            return _localStorage.GetItem<ColorScheme?>(PreferredColorSchemeKey);
-        }
+        get => _localStorage.GetItem<ColorScheme?>(PreferredColorSchemeKey);
 
-        private set
-        {
-            _localStorage.SetItem(PreferredColorSchemeKey, value);
-        }
+        set => _localStorage.SetItem(PreferredColorSchemeKey, value);
     }
 
     public void UseSystemScheme()
@@ -52,7 +52,7 @@ public class ThemeManager : IDisposable
         PreferredColorScheme = null;
         CurrentColorScheme = _systemColorSchemeDetector.CurrentColorScheme;
         _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, null);
-        ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
+        RaiseCurrentColorSchemeChanged();
     }
 
     public void SetPreferredColorScheme(ColorScheme colorScheme)
@@ -63,7 +63,7 @@ public class ThemeManager : IDisposable
         {
             CurrentColorScheme = colorScheme;
 
-            ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
+            RaiseCurrentColorSchemeChanged();
 
         }
        
