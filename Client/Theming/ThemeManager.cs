@@ -1,4 +1,4 @@
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
 
 using Microsoft.JSInterop;
 
@@ -6,6 +6,7 @@ namespace BlazorApp1.Client.Theming;
 
 public class ThemeManager : IDisposable
 {
+    private const string PreferredColorSchemeKey = "preferredColorScheme";
     private readonly SystemColorSchemeDetector _systemColorSchemeDetector;
     private readonly ISyncLocalStorageService _localStorage;
 
@@ -37,12 +38,12 @@ public class ThemeManager : IDisposable
     {
         get
         {
-            return _localStorage.GetItem<ColorScheme?>("preferredColorScheme");
+            return _localStorage.GetItem<ColorScheme?>(PreferredColorSchemeKey);
         }
 
         set
         {
-            _localStorage.SetItem("preferredColorScheme", value);
+            _localStorage.SetItem(PreferredColorSchemeKey, value);
         }
     }
 
@@ -50,7 +51,7 @@ public class ThemeManager : IDisposable
     {
         PreferredColorScheme = null;
         CurrentColorScheme = _systemColorSchemeDetector.CurrentColorScheme;
-        _localStorage.SetItem<ColorScheme?>("preferredColorScheme", null);
+        _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, null);
         ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
     }
 
@@ -64,7 +65,7 @@ public class ThemeManager : IDisposable
 
             ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
 
-            _localStorage.SetItem<ColorScheme?>("preferredColorScheme", colorScheme);
+            _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, colorScheme);
         }
     }
     
