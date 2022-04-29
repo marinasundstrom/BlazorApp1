@@ -5,6 +5,11 @@ Simple app including everything needed for a enterprise-grade Blazor app that is
 The main purpose is to show how to set all this up.
 
 This project started off as a merger of the Blazor Hosted with Individual Auth template and the MudBlazor Hosted template.
+
+<img src="/Screenshots/screenshot1.png" />
+
+<img src="/Screenshots/screenshot2.png" />
+
 ## Contents
 
 The app comes with this:
