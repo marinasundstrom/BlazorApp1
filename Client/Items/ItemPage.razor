@@ -14,7 +14,14 @@
     }
     else if (error)
     {
-        <p>Error</p>
+        @if(notFound) 
+        {
+            <MudText Typo="Typo.h3" GutterBottom="true">Not found :(</MudText>
+        }
+        else 
+        {
+            <MudText Typo="Typo.h3" GutterBottom="true">Something went wrong</MudText>
+        }
     }
 }
 else
@@ -33,18 +40,28 @@ else
     ItemDto? item;
     bool loading;
     bool error;
+    bool notFound;
 
     [Parameter] public string Id { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
         loading = true;
+        notFound = false;
 
         try
         {
             item = await ItemsClient.GetItemAsync(Id);
         }
-        catch (Exception exc)
+        catch (ApiException exc)
+        {
+            if(exc.StatusCode == 404) 
+            {
+                notFound = true;
+            }
+            error = true;
+        }
+        catch (HttpRequestException exc)
         {
             error = true;
         }

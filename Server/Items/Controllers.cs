@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BlazorApp1.Server.Items.Commands;
 using BlazorApp1.Server.Items.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace BlazorApp1.Server.Items.Controllers;
 
@@ -20,6 +21,9 @@ public class ItemsController : ControllerBase
 
     [HttpGet]
     [AllowAnonymous]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<ItemsResult<ItemDto>>> GetItemsAsync(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
