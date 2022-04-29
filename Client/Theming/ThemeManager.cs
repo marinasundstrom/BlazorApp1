@@ -41,7 +41,7 @@ public class ThemeManager : IDisposable
             return _localStorage.GetItem<ColorScheme?>(PreferredColorSchemeKey);
         }
 
-        set
+        private set
         {
             _localStorage.SetItem(PreferredColorSchemeKey, value);
         }
@@ -65,8 +65,9 @@ public class ThemeManager : IDisposable
 
             ColorSchemeChanged?.Invoke(this, new ColorSchemeChangedEventArgs(CurrentColorScheme));
 
-            _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, colorScheme);
         }
+       
+        _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, colorScheme);
     }
     
     public event EventHandler<ColorSchemeChangedEventArgs> ColorSchemeChanged = null!;
