@@ -1,6 +1,6 @@
 ﻿namespace BlazorApp1.Client.Theming;
 
-public enum Theme
+public enum ColorScheme
 {
     Light,
     Dark,

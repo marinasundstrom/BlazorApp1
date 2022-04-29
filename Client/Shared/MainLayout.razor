@@ -3,14 +3,14 @@
 @inject IDialogService DialogService
 @inject IStringLocalizer<MainLayout> T
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
-@inject ThemeDetector ThemeDetector
+@inject ThemeManager ThemeManager
 
-<MudThemeProvider IsDarkMode="@(_currentTheme == Theme.Dark)" Theme="_theme" />
+<MudThemeProvider IsDarkMode="@(_currentColorScheme == ColorScheme.Dark)" Theme="_theme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <AppBar DrawerToggleCallback="@((e) => DrawerToggle())" SelectedTheme="_currentTheme" ThemeToggleCallback="@(async (theme) => await SetPreferredTheme(theme))" />
+    <AppBar DrawerToggleCallback="@((e) => DrawerToggle())" />
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">@T["AppTitle"]</MudText>
@@ -31,20 +31,12 @@
 @code {
     private MudTheme _theme = new();
     bool _drawerOpen = true;
-    Theme? _preferredTheme;
-    Theme? _currentTheme;
+    ColorScheme? _currentColorScheme;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        _preferredTheme = await LocalStorage.GetItemAsync<Theme?>("preferredTheme");
-        _currentTheme = await ThemeDetector.GetCurrentThemeAsync();
-
-        if(_preferredTheme is not null)
-        {
-            _currentTheme = _preferredTheme;
-        }
-
-        ThemeDetector.ThemeChanged += OnDarkModeChanged;
+        ThemeManager.ColorSchemeChanged += OnColorSchemeChanged;
+        _currentColorScheme = ThemeManager.CurrentColorScheme;
     }
 
     void DrawerToggle()
@@ -52,43 +44,9 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    async Task SetPreferredTheme(Theme? preferredTheme)
+    void OnColorSchemeChanged(object? sender, ColorSchemeChangedEventArgs ea)
     {
-        _preferredTheme = preferredTheme;
-
-        if (_preferredTheme is not null)
-        {
-            _currentTheme = preferredTheme;
-        }
-        else
-        {
-            _currentTheme = await ThemeDetector.GetCurrentThemeAsync();
-        }
-
-        await LocalStorage.SetItemAsync("preferredTheme", _preferredTheme);
-
-        StateHasChanged();
-    }
-
-    async Task DarkModeToggle()
-    {
-        _currentTheme = _preferredTheme == Theme.Dark ? Theme.Light : Theme.Dark;
-        _preferredTheme = _currentTheme;
-
-        await LocalStorage.SetItemAsync("preferredTheme", _preferredTheme);
-    }
-
-    void OnDarkModeChanged(object? sender, ThemeChangedEventArgs ea)
-    {
-        if (_preferredTheme is not null) 
-        {
-            return;
-        }
-
-        if (_currentTheme != ea.Theme)
-        {
-            _currentTheme = ea.Theme;
-        }
+        _currentColorScheme = ea.ColorScheme;
 
         StateHasChanged();
     }
