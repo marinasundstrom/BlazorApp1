@@ -1,7 +1,5 @@
 ﻿using Blazored.LocalStorage;
 
-using Microsoft.JSInterop;
-
 namespace BlazorApp1.Client.Theming;
 
 public class ThemeManager : IDisposable

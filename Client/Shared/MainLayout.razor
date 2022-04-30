@@ -1,9 +1,10 @@
 ﻿@using BlazorApp1.Client.Theming
+@using Blazored.LocalStorage
 @inherits LayoutComponentBase
 @inject IDialogService DialogService
 @inject IStringLocalizer<MainLayout> T
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 @inject ThemeManager ThemeManager
+@inject ILocalStorageService LocalStorage
 
 <MudThemeProvider IsDarkMode="@(_currentColorScheme == ColorScheme.Dark)" Theme="_theme" />
 <MudDialogProvider />
@@ -30,18 +31,22 @@
 
 @code {
     private MudTheme _theme = new();
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
     ColorScheme? _currentColorScheme;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         ThemeManager.ColorSchemeChanged += OnColorSchemeChanged;
         _currentColorScheme = ThemeManager.CurrentColorScheme;
+
+        _drawerOpen = await LocalStorage.GetItemAsync<bool?>("drawerOpen") ?? true;
     }
 
-    void DrawerToggle()
+    async Task DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+
+        await LocalStorage.SetItemAsync("drawerOpen", _drawerOpen);
     }
 
     void OnColorSchemeChanged(object? sender, ColorSchemeChangedEventArgs ea)
