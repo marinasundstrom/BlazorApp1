@@ -1,0 +1,42 @@
+# This YAML exposes the fields defined in the UI. It can be edited directly or have new YAML pasted in.
+# Not all available Kubernetes properties are recognized by the form exposed in the UI, and unrecognized properties are ignored during import.
+# If the required properties are not supported by this step, the 'Deploy raw Kubernetes YAML' step can be used to deploy YAML directly to Kubernetes, and supports all properties.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  labels:
+    app: rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: 'rabbitmq:3-management'
+          ports:
+            - name: management
+              containerPort: 15672
+            - name: rabbit
+              containerPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-deployment
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672
+  type: LoadBalancer

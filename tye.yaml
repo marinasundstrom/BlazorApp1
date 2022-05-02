@@ -13,10 +13,10 @@ services:
   bindings:
   - name: http
     protocol: http
-    port: 5000
+    port: 80
   - name: https
     protocol: https
-    port: 5001
+    port: 443
 
 - name: worker
   project: Worker/Worker.csproj
