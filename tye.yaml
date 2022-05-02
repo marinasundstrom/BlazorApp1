@@ -5,6 +5,7 @@
 #    https://aka.ms/AA7q20u
 #
 name: blazorapp1
+registry: ba1cregistry.azurecr.io
 
 services:
 - name: blazorapp1
