@@ -10,13 +10,16 @@ namespace BlazorApp1.Server.Data;
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 {
     private readonly ICurrentUserService _currentUserService;
+    private readonly IDateTimeService _dateTime;
 
     public ApplicationDbContext(
         DbContextOptions options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
-        ICurrentUserService currentUserService) : base(options, operationalStoreOptions)
+        ICurrentUserService currentUserService, 
+        IDateTimeService dateTime) : base(options, operationalStoreOptions)
     {
         _currentUserService = currentUserService;
+        _dateTime = dateTime;
     }
 
 #nullable disable
@@ -38,18 +41,18 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         {
             if(entry.State == EntityState.Added)
             {
-                entry.Entity.Created = DateTime.Now;
+                entry.Entity.Created = _dateTime.Now;
                 entry.Entity.CreatedById = _currentUserService.UserId!;
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.LastModified = DateTime.Now;
+                entry.Entity.LastModified = _dateTime.Now;
                 entry.Entity.LastModifiedById = _currentUserService.UserId;
             }
             else if(entry.State == EntityState.Deleted 
                 && entry.Entity is ISoftDelete e) 
             { 
-                e.Deleted = DateTime.Now;
+                e.Deleted = _dateTime.Now;
                 e.DeletedById = _currentUserService.UserId;
 
                 entry.State = EntityState.Modified;
