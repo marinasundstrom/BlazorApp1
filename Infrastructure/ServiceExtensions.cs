@@ -12,11 +12,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorApp1.Infrastructure;
+
 public static class ServiceExtensions
 {
     private const string ConnectionStringKey = "sqlserver";
 
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) 
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString(ConnectionStringKey);
 
@@ -25,6 +26,17 @@ public static class ServiceExtensions
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
+        AddIdentity(services);
+
+        services.AddScoped<IDateTimeService, DateTimeService>();
+
+        services.AddScoped<IDomainEventService, DomainEventService>();
+
+        return services;
+    }
+
+    private static void AddIdentity(IServiceCollection services)
+    {
         services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -36,12 +48,6 @@ public static class ServiceExtensions
                 opt.ApiResources.Single().UserClaims.Add("role");
             });
 
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-
-        services.AddScoped<IDateTimeService, DateTimeService>();
-
-        services.AddScoped<IDomainEventService, DomainEventService>();
-
-        return services;
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");            
     }
 }
