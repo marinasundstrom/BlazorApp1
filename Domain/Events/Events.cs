@@ -1,8 +1,6 @@
 ﻿using BlazorApp1.Domain;
 
-using MediatR;
-
-namespace BlazorApp1.Application.Items.Events;
+namespace BlazorApp1.Domain.Events;
 
 public class ItemCreatedEvent : DomainEvent 
 {
