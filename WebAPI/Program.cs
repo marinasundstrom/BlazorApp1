@@ -12,8 +12,6 @@ using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMediatR(typeof(Program));
-
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);

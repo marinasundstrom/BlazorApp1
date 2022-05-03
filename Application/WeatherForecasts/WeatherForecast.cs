@@ -1,4 +1,4 @@
-﻿namespace BlazorApp1.WebAPI.WeatherForecasts;
+﻿namespace BlazorApp1.Application.WeatherForecasts;
 
 public class WeatherForecast
 {

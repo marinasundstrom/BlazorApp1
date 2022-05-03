@@ -1,11 +1,11 @@
-﻿using BlazorApp1.WebAPI.WeatherForecasts;
+﻿using BlazorApp1.Application.WeatherForecasts;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthTest.Server.WeatherForecasts;
+namespace BlazorApp1.WebAPI.Controllers;
 
 [Authorize]
 [ApiController]

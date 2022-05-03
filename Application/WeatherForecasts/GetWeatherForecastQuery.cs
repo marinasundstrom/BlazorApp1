@@ -1,6 +1,8 @@
-using MediatR;
+﻿using MediatR;
 
-namespace BlazorApp1.WebAPI.WeatherForecasts;
+using Microsoft.Extensions.Logging;
+
+namespace BlazorApp1.Application.WeatherForecasts;
 
 public record GetWeatherForecastQuery() : IRequest<IEnumerable<WeatherForecast>>
 {

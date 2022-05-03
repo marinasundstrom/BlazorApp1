@@ -16,4 +16,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="WeatherForecasts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WeatherForecasts\" />
+  </ItemGroup>
 </Project>
