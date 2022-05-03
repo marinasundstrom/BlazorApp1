@@ -12,12 +12,10 @@ public record UpdateItemDescriptionCommand(string Id, string Description) : IReq
     public class Handler : IRequestHandler<UpdateItemDescriptionCommand>
     {
         private readonly IApplicationDbContext context;
-        private readonly IMediator mediator;
 
-        public Handler(IApplicationDbContext context, IMediator mediator)
+        public Handler(IApplicationDbContext context)
         {
             this.context = context;
-            this.mediator = mediator;
         }
 
         public async Task<Unit> Handle(UpdateItemDescriptionCommand request, CancellationToken cancellationToken)

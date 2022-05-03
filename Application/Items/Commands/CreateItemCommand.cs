@@ -11,12 +11,10 @@ public record CreateItemCommand(string Name, string Description) : IRequest<Resu
     public class Handler : IRequestHandler<CreateItemCommand, Result<Unit, Exception>>
     {
         private readonly IApplicationDbContext context;
-        private readonly IMediator mediator;
 
-        public Handler(IApplicationDbContext context, IMediator mediator)
+        public Handler(IApplicationDbContext context)
         {
             this.context = context;
-            this.mediator = mediator;
         }
 
         public async Task<Result<Unit, Exception>> Handle(CreateItemCommand request, CancellationToken cancellationToken)

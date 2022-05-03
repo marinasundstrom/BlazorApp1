@@ -12,12 +12,10 @@ public record DeleteItemCommand(string Id) : IRequest
     public class Handler : IRequestHandler<DeleteItemCommand>
     {
         private readonly IApplicationDbContext context;
-        private readonly IMediator mediator;
 
-        public Handler(IApplicationDbContext context, IMediator mediator)
+        public Handler(IApplicationDbContext context)
         {
             this.context = context;
-            this.mediator = mediator;
         }
 
         public async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)

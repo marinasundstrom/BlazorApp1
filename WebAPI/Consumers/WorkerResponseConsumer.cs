@@ -22,6 +22,7 @@ public class WorkerResponseConsumer : IConsumer<WorkerResponse>
 
         var ev = new ResponseReceivedEvent(response.Text);
         ev.IsPublished = true;
+        
         await _domainEventService.Publish(ev);
     }
 }
