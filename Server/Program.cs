@@ -90,6 +90,7 @@ builder.Services.AddOpenApiDocument(document =>
 
 builder.Services.AddMediatR(typeof(Program));
 
+builder.Services.AddScoped<IDomainEventService, DomainEventService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IDateTimeService, DateTimeService>();
 builder.Services.AddScoped<IEmailService, EmailService>();

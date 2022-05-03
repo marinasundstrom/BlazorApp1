@@ -9,15 +9,18 @@ namespace BlazorApp1.Server.Data;
 
 public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 {
+    private readonly IDomainEventService _domainEventService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeService _dateTime;
 
     public ApplicationDbContext(
         DbContextOptions options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
-        ICurrentUserService currentUserService, 
+        IDomainEventService domainEventService,
+        ICurrentUserService currentUserService,
         IDateTimeService dateTime) : base(options, operationalStoreOptions)
     {
+        _domainEventService = domainEventService;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
     }
@@ -35,11 +38,11 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
         {
-            if(entry.State == EntityState.Added)
+            if (entry.State == EntityState.Added)
             {
                 entry.Entity.Created = _dateTime.Now;
                 entry.Entity.CreatedById = _currentUserService.UserId!;
@@ -49,9 +52,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
                 entry.Entity.LastModified = _dateTime.Now;
                 entry.Entity.LastModifiedById = _currentUserService.UserId;
             }
-            else if(entry.State == EntityState.Deleted 
-                && entry.Entity is ISoftDelete e) 
-            { 
+            else if (entry.State == EntityState.Deleted
+                && entry.Entity is ISoftDelete e)
+            {
                 e.Deleted = _dateTime.Now;
                 e.DeletedById = _currentUserService.UserId;
 
@@ -59,6 +62,30 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
             }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        DomainEvent[] events = GetDomainEvents();
+
+        var result = await base.SaveChangesAsync(cancellationToken);
+
+        await DispatchEvents(events);
+
+        return result;
+    }
+
+    private DomainEvent[] GetDomainEvents()
+    {
+        return ChangeTracker.Entries<IHasDomainEvent>()
+            .Select(x => x.Entity.DomainEvents)
+            .SelectMany(x => x)
+            .Where(domainEvent => !domainEvent.IsPublished)
+            .ToArray();
+    }
+
+    private async Task DispatchEvents(DomainEvent[] events)
+    {
+        foreach (var @event in events)
+        {
+            @event.IsPublished = true;
+            await _domainEventService.Publish(@event);
+        }
     }
 }

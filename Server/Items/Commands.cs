@@ -28,9 +28,9 @@ public record CreateItemCommand(string Name, string Description) : IRequest<Resu
 
             context.Items.Add(item);
 
-            await context.SaveChangesAsync(cancellationToken);
+            item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
 
-            await mediator.Publish(new ItemCreatedEvent(item.Id));
+            await context.SaveChangesAsync(cancellationToken);
 
             return new Result<Unit, Exception>.Ok(Unit.Value);
         }
@@ -60,9 +60,9 @@ public record UpdateItemDescriptionCommand(string Id, string Description) : IReq
 
             item.Description = request.Description;
 
-            await context.SaveChangesAsync(cancellationToken);
+            item.DomainEvents.Add(new ItemUpdatedEvent(item.Id));
 
-            await mediator.Publish(new ItemUpdatedEvent(item.Id));
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }
@@ -91,10 +91,10 @@ public record DeleteItemCommand(string Id) : IRequest
             }
 
             context.Items.Remove(item);
+            
+            item.DomainEvents.Add(new ItemDeletedEvent(item.Id));
 
             await context.SaveChangesAsync(cancellationToken);
-
-            await mediator.Publish(new ItemDeletedEvent(item.Id));
 
             return Unit.Value;
         }
