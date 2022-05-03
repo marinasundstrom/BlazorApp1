@@ -9,7 +9,7 @@ registry: ba1cregistry.azurecr.io
 
 services:
 - name: blazorapp1
-  project: Server/BlazorApp1.Server.csproj
+  project: WebAPI/WebAPI.csproj
   bindings:
   - name: http
     protocol: http
