@@ -9,7 +9,7 @@ builder.Services.AddMassTransit(x =>
     x.SetKebabCaseEndpointNameFormatter();
 
     //x.AddConsumers(typeof(Program).Assembly);
-    x.AddConsumer<Message2Consumer>();
+    x.AddConsumer<WorkerMessageConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

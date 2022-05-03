@@ -33,3 +33,13 @@ public class ItemDeletedEvent : DomainEvent
 
     public string ItemId { get; }
 }
+
+public class ResponseReceivedEvent : DomainEvent
+{
+    public ResponseReceivedEvent(string message)
+    {
+        Message = message;
+    }
+
+    public string Message { get; }
+}

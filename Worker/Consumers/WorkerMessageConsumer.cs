@@ -4,7 +4,7 @@ using Worker.Contracts;
 
 namespace Worker.Consumers;
 
-public class Message2Consumer : IConsumer<WorkerMessage>
+public class WorkerMessageConsumer : IConsumer<WorkerMessage>
 {
     public async Task Consume(ConsumeContext<WorkerMessage> context)
     {

@@ -1,4 +1,5 @@
-﻿using BlazorApp1.Application.Items.Events;
+﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Application.Items.Events;
 using BlazorApp1.Application.Services;
 
 using MediatR;
@@ -33,5 +34,21 @@ public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotificat
     public Task Handle(DomainEventNotification<ItemDeletedEvent> notification, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
+    }
+}
+
+public class ResponseReceivedEventHandler : INotificationHandler<DomainEventNotification<ResponseReceivedEvent>>
+{
+    private readonly INotifier _notifier;
+
+    public ResponseReceivedEventHandler(INotifier notifier)
+    {
+        _notifier = notifier;
+    }
+
+    public async Task Handle(DomainEventNotification<ResponseReceivedEvent> notification, CancellationToken cancellationToken)
+    {
+        var message = notification.DomainEvent.Message;
+        await _notifier.Notify(message);
     }
 }

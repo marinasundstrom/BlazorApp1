@@ -7,11 +7,11 @@ using Worker.Contracts;
 
 namespace BlazorApp1.WebAPI.Consumers;
 
-public class ResponseConsumer : IConsumer<WorkerResponse>
+public class WorkerResponseConsumer : IConsumer<WorkerResponse>
 {
     private readonly IDomainEventService _domainEventService;
 
-    public ResponseConsumer(IDomainEventService domainEventService)
+    public WorkerResponseConsumer(IDomainEventService domainEventService)
     {
         _domainEventService = domainEventService;
     }
