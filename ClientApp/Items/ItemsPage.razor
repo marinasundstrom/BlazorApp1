@@ -11,15 +11,22 @@
 <MudText Typo="Typo.h3" GutterBottom="true">@T["Items"]</MudText>
 
 <AuthorizeView>
-    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-2">
+    <MudButton @onclick="NewItem" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
         @T["NewItem"]
     </MudButton>
+
+    @if(selectedItems.Count > 0) 
+    {
+        <MudButton @onclick="DeleteSelectedItems" Variant="Variant.Filled" StartIcon="@Icons.Filled.Delete" Color="Color.Primary" Class="ms-2 mb-2 mt-2">
+            @T["DeleteSelected"]
+        </MudButton>
+    }
     
     <MudCheckBox Label="@T["JustMyItems"]" CheckedChanged="new Func<bool, Task>(OnJustMyItemsCheckedChanged)" Checked="justMyItems" />
 </AuthorizeView>
 
 
-<MudTable T="ItemDto" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="ItemDto" MultiSelection="true" @bind-SelectedItems="selectedItems" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">@T["Header_Description"]</MudTableSortLabel></MudTh>
@@ -53,6 +60,7 @@
     MudTable<ItemDto> table = null!;
     string? createdBy;
     bool justMyItems;
+    private HashSet<ItemDto> selectedItems = new HashSet<ItemDto>();
 
     private async Task<TableData<ItemDto>> ServerReload(TableState state)
     {
@@ -82,6 +90,8 @@
             createdBy = null;
         }
 
+        selectedItems.Clear();
+
         await table.ReloadServerData();
 
         justMyItems = isChecked;
@@ -92,7 +102,7 @@
         NavigationManager.NavigateTo($"/items/{args.Item.Id}");
     }
 
-    private async Task OpenDialog()
+    private async Task NewItem()
     {
         var dialogReference = DialogService.Show<NewItemDialog>(T["NewItem"]);
 
@@ -101,6 +111,8 @@
 
         if (result.Cancelled)
             return;
+
+        selectedItems.Clear();
 
         try
         {
@@ -126,9 +138,37 @@
            
             if (result.GetValueOrDefault())
             {
-                await ItemsClient.DeleteItemAsync(item.Id);
+                await DeleteItemCore(item);
 
                 await table.ReloadServerData();
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    private async Task DeleteItemCore(ItemDto item)
+    {
+        await ItemsClient.DeleteItemAsync(item.Id);
+
+        selectedItems.Remove(item);
+    }
+
+    private async Task DeleteSelectedItems() 
+    {
+        try
+        {
+            var result = await DialogService.ShowMessageBox($"Delete selected items?", "Are you sure?", "Yes", "No");
+           
+            if (result.GetValueOrDefault())
+            {
+                await Task.WhenAll(selectedItems.Select(DeleteItemCore));
+
+                await table.ReloadServerData();
+
+                StateHasChanged();
             }
         }
         catch (AccessTokenNotAvailableException exception)

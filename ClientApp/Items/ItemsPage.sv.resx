@@ -156,4 +156,7 @@
   <data name="SortBy" xml:space="preserve">
     <value>Sortera efter</value>
   </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Radera valda</value>
+  </data>
 </root>
