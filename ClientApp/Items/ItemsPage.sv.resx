@@ -159,4 +159,7 @@
   <data name="DeleteSelected" xml:space="preserve">
     <value>Radera valda</value>
   </data>
+  <data name="SelectMultiple" xml:space="preserve">
+    <value>Välj flera</value>
+  </data>
 </root>

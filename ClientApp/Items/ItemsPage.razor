@@ -14,19 +14,21 @@
     <MudButton @onclick="NewItem" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
         @T["NewItem"]
     </MudButton>
+    
+    <MudCheckBox Label="@T["JustMyItems"]" CheckedChanged="new Func<bool, Task>(OnJustMyItemsCheckedChanged)" Checked="justMyItems" />
 
+    <MudCheckBox Label="@T["SelectMultiple"]" @bind-Checked="selectMultiple" />
+        
     @if(selectedItems.Count > 0) 
     {
         <MudButton @onclick="DeleteSelectedItems" Variant="Variant.Filled" StartIcon="@Icons.Filled.Delete" Color="Color.Primary" Class="ms-2 mb-2 mt-2">
             @T["DeleteSelected"]
         </MudButton>
     }
-    
-    <MudCheckBox Label="@T["JustMyItems"]" CheckedChanged="new Func<bool, Task>(OnJustMyItemsCheckedChanged)" Checked="justMyItems" />
 </AuthorizeView>
 
 
-<MudTable T="ItemDto" MultiSelection="true" @bind-SelectedItems="selectedItems" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="ItemDto" MultiSelection="@selectMultiple" @bind-SelectedItems="selectedItems" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="ItemClicked" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">@T["Header_Description"]</MudTableSortLabel></MudTh>
@@ -60,6 +62,7 @@
     MudTable<ItemDto> table = null!;
     string? createdBy;
     bool justMyItems;
+    bool selectMultiple;
     private HashSet<ItemDto> selectedItems = new HashSet<ItemDto>();
 
     private async Task<TableData<ItemDto>> ServerReload(TableState state)
@@ -97,8 +100,13 @@
         justMyItems = isChecked;
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)
+    private void ItemClicked(TableRowClickEventArgs<ItemDto> args)
     {
+        if(selectMultiple) 
+        {
+            return;
+        }
+
         NavigationManager.NavigateTo($"/items/{args.Item.Id}");
     }
 

@@ -159,4 +159,7 @@
   <data name="DeleteSelected" xml:space="preserve">
     <value>Delete selected</value>
   </data>
+  <data name="SelectMultiple" xml:space="preserve">
+    <value>Select multiple</value>
+  </data>
 </root>
