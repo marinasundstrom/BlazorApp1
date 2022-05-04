@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Application.Services;
+using BlazorApp1.Domain;
+
+using Duende.IdentityServer.EntityFramework.Options;
+
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Duende.IdentityServer.EntityFramework.Options;
-using BlazorApp1.Domain;
-using BlazorApp1.Application.Services;
-using BlazorApp1.Application.Common;
 
 namespace BlazorApp1.Infrastructure.Persistence;
 
