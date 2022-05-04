@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Domain;
 
 using MediatR;
 
@@ -22,9 +23,7 @@ public record GetItemQuery(string Id) : IRequest<ItemDto?>
             var item = await context.Items
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Include(i => i.CreatedBy)
-                .Include(i => i.LastModifiedBy)
-                //.Include(i => i.DeletedBy)
+                .IncludeAll()
                 //.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
