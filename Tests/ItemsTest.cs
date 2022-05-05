@@ -5,6 +5,7 @@ using BlazorApp1.Application.Common;
 using BlazorApp1.Application.Items;
 using BlazorApp1.Application.Items.Commands;
 using BlazorApp1.Application.Services;
+using BlazorApp1.Domain;
 using BlazorApp1.Domain.Events;
 using BlazorApp1.Infrastructure.Persistence;
 
@@ -27,12 +28,7 @@ public class ItemsTest
     {
         // Arrange
 
-        var user = new BlazorApp1.Domain.ApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserName = "test@email.com",
-            NormalizedUserName = "TEST@EMAIL.COM"
-        };
+        ApplicationUser user = CreateTestUser();
 
         var fakeDomainEventService = Substitute.For<IDomainEventService>();
 
@@ -42,17 +38,7 @@ public class ItemsTest
         var fakeDateTimeService = Substitute.For<IDateTimeService>();
         fakeDateTimeService.Now.Returns(x => DateTime.Now);
 
-        var duendeOptions = Substitute.For<Microsoft.Extensions.Options.IOptions<OperationalStoreOptions>>();
-        duendeOptions.Value.Returns(x => new OperationalStoreOptions()
-        {
-            DeviceFlowCodes = new TableConfiguration("DeviceCodes")
-        });
-
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-           .UseInMemoryDatabase(databaseName: "Test")
-           .Options;
-
-        using IApplicationDbContext context = new ApplicationDbContext(options, duendeOptions, fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
+        using IApplicationDbContext context = CreateDbContext(fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
 
         context.Users.Add(user);
 
@@ -77,5 +63,30 @@ public class ItemsTest
         await fakeDomainEventService
             .Received(1)
             .Publish(Arg.Is<ItemCreatedEvent>(d => d.ItemId == item.Id));
+    }
+
+    private static ApplicationUser CreateTestUser()
+    {
+        return new BlazorApp1.Domain.ApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            UserName = "test@email.com",
+            NormalizedUserName = "TEST@EMAIL.COM"
+        };
+    }
+
+    private static IApplicationDbContext CreateDbContext(IDomainEventService fakeDomainEventService, ICurrentUserService fakeCurrentUserService, IDateTimeService fakeDateTimeService)
+    {
+        var duendeOptions = Substitute.For<Microsoft.Extensions.Options.IOptions<OperationalStoreOptions>>();
+        duendeOptions.Value.Returns(x => new OperationalStoreOptions()
+        {
+            DeviceFlowCodes = new TableConfiguration("DeviceCodes")
+        });
+
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+           .UseInMemoryDatabase(databaseName: "Test")
+           .Options;
+
+        return new ApplicationDbContext(options, duendeOptions, fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
     }
 }
