@@ -134,7 +134,7 @@
         }
         catch (Exception exc)
         {
-            Snackbar.Add("Failed to create item.", Severity.Error);
+            Snackbar.Add(T["FailedToCreateItem"], Severity.Error);
         }
     }
 
@@ -142,7 +142,7 @@
     {
         try
         {
-            var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
+            var result = await DialogService.ShowMessageBox(T["DeleteSelectedItem", item.Name], T["AreYouSure"], T["Yes"], T["No"]);
 
             if (result.GetValueOrDefault())
             {
@@ -157,7 +157,7 @@
         }
         catch(Exception)
         {
-            Snackbar.Add("Failed to delete item.", Severity.Error);   
+            Snackbar.Add(T["FailedToDeleteItem"], Severity.Error);   
         }
     }
 
@@ -172,7 +172,7 @@
     {
         try
         {
-            var result = await DialogService.ShowMessageBox($"Delete selected items?", "Are you sure?", "Yes", "No");
+            var result = await DialogService.ShowMessageBox(T["DeleteSelectedItems"], T["AreYouSure"], T["Yes"], T["No"]);
 
             if (result.GetValueOrDefault())
             {
@@ -203,7 +203,7 @@
 
                 if(failedItems?.Any() ?? false)
                 {
-                    Snackbar.Add($"Failed to delete {failedItems?.Count()} items.", Severity.Error);      
+                    Snackbar.Add(T["FailedToDeleteItems", failedItems!.Count()], Severity.Error);      
                 }
                 
                 await table.ReloadServerData();

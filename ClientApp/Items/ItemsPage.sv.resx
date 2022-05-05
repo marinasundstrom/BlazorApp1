@@ -156,10 +156,40 @@
   <data name="SortBy" xml:space="preserve">
     <value>Sortera efter</value>
   </data>
+  <data name="SelectMultiple" xml:space="preserve">
+    <value>Välj flera</value>
+  </data>
+  <data name="FailedToCreateItem" xml:space="preserve">
+    <value>Kunde inte skapa föremål.</value>
+  </data>
   <data name="DeleteSelected" xml:space="preserve">
     <value>Radera valda</value>
   </data>
-  <data name="SelectMultiple" xml:space="preserve">
-    <value>Välj flera</value>
+  <data name="DeleteSelectedItem" xml:space="preserve">
+    <value>Radera '{0}'?</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Radera valda</value>
+  </data> 
+  <data name="DeleteSelectedItems" xml:space="preserve">
+    <value>Radera valda föremål?</value>
+  </data>
+  <data name="FailedToDeleteItem" xml:space="preserve">
+    <value>Kunde inte radera föremål.</value>
+  </data>
+  <data name="FailedToDeleteItems" xml:space="preserve">
+    <value>Kunde inte radera {0} föremål.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Är du säker?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
 </root>

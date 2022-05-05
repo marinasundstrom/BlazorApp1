@@ -156,10 +156,37 @@
   <data name="SortBy" xml:space="preserve">
     <value>Sort by</value>
   </data>
-  <data name="DeleteSelected" xml:space="preserve">
-    <value>Delete selected</value>
-  </data>
   <data name="SelectMultiple" xml:space="preserve">
     <value>Select multiple</value>
+  </data>
+  <data name="FailedToCreateItem" xml:space="preserve">
+    <value>Failed to create item.</value>
+  </data>
+  <data name="DeleteSelectedItem" xml:space="preserve">
+    <value>Delete '{0}'?</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>Delete selected</value>
+  </data> 
+  <data name="DeleteSelectedItems" xml:space="preserve">
+    <value>Delete selected items</value>
+  </data> 
+  <data name="FailedToDeleteItem" xml:space="preserve">
+    <value>Failed to delete item.</value>
+  </data>
+  <data name="FailedToDeleteItems" xml:space="preserve">
+    <value>Failed to delete {0} items.</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
 </root>
