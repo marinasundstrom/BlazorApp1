@@ -21,7 +21,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<WeatherForecast, object>(x=>x.Summary!)">@T["Summary"]</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="@T["Date"]">@context.Date</MudTd>
+            <MudTd DataLabel="@T["Date"]">@context.Date.ToString("g")</MudTd>
             <MudTd DataLabel="@T["TempC"]">@context.TemperatureC</MudTd>
             <MudTd DataLabel="@T["TempF"]">@context.TemperatureF</MudTd>
             <MudTd DataLabel="@T["Summary"]">@context.Summary</MudTd>
