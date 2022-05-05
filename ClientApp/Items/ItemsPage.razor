@@ -134,7 +134,7 @@
         }
         catch (Exception exc)
         {
-            Snackbar.Add(exc.Message.ToString(), Severity.Error);
+            Snackbar.Add("Failed to create item.", Severity.Error);
         }
     }
 
@@ -143,7 +143,7 @@
         try
         {
             var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
-           
+
             if (result.GetValueOrDefault())
             {
                 await DeleteItemCore(item);
@@ -154,6 +154,10 @@
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
+        }
+        catch(Exception)
+        {
+            Snackbar.Add("Failed to delete item.", Severity.Error);   
         }
     }
 
@@ -169,11 +173,39 @@
         try
         {
             var result = await DialogService.ShowMessageBox($"Delete selected items?", "Are you sure?", "Yes", "No");
-           
+
             if (result.GetValueOrDefault())
             {
-                await Task.WhenAll(selectedItems.Select(DeleteItemCore));
+                List<ItemDto>? failedItems = null;
 
+                foreach(var item in selectedItems)
+                {
+                    try
+                    {
+                        await DeleteItemCore(item);
+
+                        selectedItems.Remove(item);
+                    }
+                    catch (AccessTokenNotAvailableException exception)
+                    {
+                        exception.Redirect();
+                    }
+                    catch(Exception)
+                    {
+                        if(failedItems is null)
+                        {
+                            failedItems = new List<ItemDto>();
+                        }
+
+                        failedItems.Add(item);
+                    }
+                }
+
+                if(failedItems?.Any() ?? false)
+                {
+                    Snackbar.Add($"Failed to delete {failedItems?.Count()} items.", Severity.Error);      
+                }
+                
                 await table.ReloadServerData();
 
                 StateHasChanged();
