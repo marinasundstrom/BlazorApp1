@@ -36,7 +36,7 @@ else
 
     <MudText Typo="Typo.body1">@item.Description</MudText>
 
-    <MudAutocomplete T="StatusDto" Label="Status" ToStringFunc="(s) => s.Name" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
+    <MudAutocomplete T="StatusDto" Label="@T["Status"]" ToStringFunc="(s) => s.Name" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
 
     </MudAutocomplete>
 }

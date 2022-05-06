@@ -53,7 +53,7 @@ public class ItemsController : ControllerBase
     [HttpPost]
     public async Task CreateItem([FromBody] CreateItemDto value)
     {
-        await mediator.Send(new CreateItemCommand(value.Name, value.Description));
+        await mediator.Send(new CreateItemCommand(value.Name, value.Description, value.StatusId));
     }
 
     [HttpPut("{id}/Status")]
@@ -80,4 +80,4 @@ public record UpdateItemStatusDto(int StatusId);
 
 public record UpdateItemDescriptionDto(string Description);
 
-public record CreateItemDto(string Name, string Description);
+public record CreateItemDto(string Name, string Description, int StatusId);

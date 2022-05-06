@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject IStringLocalizer<NewItemDialog> T
+@inject IStatusesClient StatusesClient
 
 <div style="width: 350px; max-width: 350px;">
     <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
@@ -11,6 +12,9 @@
                               @bind-Value="model.Name" For="@(() => model.Name)" />
                 <MudTextField Label="@T["Description"]" Lines="3" Class="mt-3"
                               @bind-Value="model.Description" For="@(() => model.Description)" />
+                <MudAutocomplete T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => s.Name" @bind-Value="model.Status" SearchFunc="@Search">
+
+                </MudAutocomplete>              
             </DialogContent>
 
             <DialogActions>
@@ -27,6 +31,12 @@
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
 
+    protected override async Task OnInitializedAsync() 
+    {
+        statuses = await StatusesClient.GetStatusesAsync();
+        model.Status = statuses.First();
+    }
+
     void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(model));
 
     void Cancel() => MudDialog.Cancel();
@@ -40,5 +50,19 @@
         [Required(ErrorMessageResourceType = typeof(Resources.App), ErrorMessageResourceName = "RequiredError")]
         [StringLength(240, ErrorMessageResourceType = typeof(Resources.App), ErrorMessageResourceName = "MaxLengthError")]
         public string Description { get; set; } = null!;
+
+        [Required]
+        public StatusDto Status { get; set; } = null!;
+    }
+
+
+    IEnumerable<StatusDto>? statuses = null;
+
+    private async Task<IEnumerable<StatusDto>> Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return statuses;
+
+        return statuses.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }

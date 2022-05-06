@@ -551,6 +551,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "statusId": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

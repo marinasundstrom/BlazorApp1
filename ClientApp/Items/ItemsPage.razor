@@ -129,7 +129,8 @@
             await ItemsClient.CreateItemAsync(new CreateItemDto()
                 {
                     Name = model.Name,
-                    Description = model.Description
+                    Description = model.Description,
+                    StatusId = model.Status.Id
                 });
 
             await table.ReloadServerData();

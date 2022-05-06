@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.Commands;
 
-public record CreateItemCommand(string Name, string Description) : IRequest<Result<ItemDto, Exception>>
+public record CreateItemCommand(string Name, string Description, int StatusId) : IRequest<Result<ItemDto, Exception>>
 {
     public class Handler : IRequestHandler<CreateItemCommand, Result<ItemDto, Exception>>
     {
@@ -25,7 +25,7 @@ public record CreateItemCommand(string Name, string Description) : IRequest<Resu
             {
                 Name = request.Name,
                 Description = request.Description,
-                StatusId = 1
+                StatusId = request.StatusId
             };
 
             context.Items.Add(item);
