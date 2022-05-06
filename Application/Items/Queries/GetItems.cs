@@ -20,6 +20,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
         public async Task<Result<PagedResult<ItemDto>, Exception>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Items
+                .OrderByDescending(x => x.Created)
                 .AsNoTracking();
 
             if(request.CreatedBy is not null)
