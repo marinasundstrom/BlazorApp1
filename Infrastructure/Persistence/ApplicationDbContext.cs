@@ -32,6 +32,8 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<Item> Items { get; set; }
 
+    public DbSet<Status> Statuses { get; set; }
+
 #nullable restore
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

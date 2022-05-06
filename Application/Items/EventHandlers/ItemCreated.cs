@@ -16,6 +16,6 @@ public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotificat
 
     public async Task Handle(DomainEventNotification<ItemCreatedEvent> notification, CancellationToken cancellationToken)
     {
-        await emailService.SendEmail("test@email.com", "Test recipient", "This is a <b>test</b>.");
+        await emailService.SendEmail("test@email.com", "Item created", "This is a <b>test</b>.");
     }
 }

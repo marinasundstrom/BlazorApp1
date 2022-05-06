@@ -117,6 +117,19 @@ public class SeedData
             {
                 logger.LogDebug("bob already exists");
             }
+            
+            if (!context.Statuses.Any()) 
+            {
+                context.Statuses.Add(new Status {
+                    Name = "Available"
+                });
+
+                context.Statuses.Add(new Status {
+                    Name = "Lost"
+                });
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

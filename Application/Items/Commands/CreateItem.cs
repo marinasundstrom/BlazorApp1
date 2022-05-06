@@ -24,7 +24,8 @@ public record CreateItemCommand(string Name, string Description) : IRequest<Resu
             var item = new Item()
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                StatusId = 1
             };
 
             context.Items.Add(item);

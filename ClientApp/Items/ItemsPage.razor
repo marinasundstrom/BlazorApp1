@@ -32,6 +32,7 @@
     <HeaderContent>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">@T["Header_Description"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Status">@T["Header_Status"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
         @* <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">@T["Header_LastModified"]</MudTableSortLabel></MudTh>
@@ -41,6 +42,7 @@
     <RowTemplate>
         <MudTd DataLabel="@T["Header_Name"]">@context.Name</MudTd>
         <MudTd DataLabel="@T["Header_Description"]">@context.Description</MudTd>
+        <MudTd DataLabel="@T["Header_Status"]">@context.Status.Name</MudTd>
         <MudTd DataLabel="@T["Header_Created"]">@context.Created.ToString("g")</MudTd>
         <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy</MudTd>
         @* <MudTd DataLabel="@T["Header_LastModified"]">@context.LastModified?.ToString("g")</MudTd>

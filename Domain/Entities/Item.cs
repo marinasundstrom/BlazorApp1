@@ -1,4 +1,6 @@
-﻿namespace BlazorApp1.Domain;
+﻿using BlazorApp1.Domain.Events;
+
+namespace BlazorApp1.Domain;
 
 public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 {
@@ -7,6 +9,25 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
     public string Name { get; set; } = null!;
 
     public string Description { get; set; } = null!;
+
+    public Status Status { get; private set; } = null!;
+
+    public int StatusId { get; set; } 
+
+    public void SetStatus(Status newStatus)
+    {
+        Status = newStatus;
+
+        SetStatus(Status.Id);
+    }
+
+
+    public void SetStatus(int newStatus)
+    {
+        StatusId = newStatus;
+
+        DomainEvents.Add(new StatusUpdatedEvent(Id, StatusId));
+    }
 
     public DateTime? Deleted { get; set; }
 

@@ -126,6 +126,9 @@
   <data name="Header_Description" xml:space="preserve">
     <value>Beskrivning</value>
   </data>
+  <data name="Header_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="Header_LastModified" xml:space="preserve">
     <value>Ändrad </value>
   </data>

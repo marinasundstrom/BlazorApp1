@@ -25,7 +25,7 @@ public class ItemsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<PagedResult<ItemDto>>> GetItemsAsync(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
+    public async Task<ActionResult<PagedResult<ItemDto>>> GetItems(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
         if(result is Result<PagedResult<ItemDto>, Exception>.Error(Exception Error)) 
@@ -56,8 +56,15 @@ public class ItemsController : ControllerBase
         await mediator.Send(new CreateItemCommand(value.Name, value.Description));
     }
 
+    [HttpPut("{id}/Status")]
+    public async Task UpdateStatus(string id, [FromBody] UpdateItemStatusDto value)
+    {
+        await mediator.Send(new UpdateItemStatusCommand(id, value.StatusId));
+    }
+
+
     [HttpPut("{id}/Description")]
-    public async Task UpdateItemDescription(string id, [FromBody] UpdateItemDescriptionDto value)
+    public async Task UpdateDescription(string id, [FromBody] UpdateItemDescriptionDto value)
     {
         await mediator.Send(new UpdateItemDescriptionCommand(id, value.Description));
     }
@@ -68,6 +75,8 @@ public class ItemsController : ControllerBase
         await mediator.Send(new DeleteItemCommand(id));
     }
 }
+
+public record UpdateItemStatusDto(int StatusId);
 
 public record UpdateItemDescriptionDto(string Description);
 

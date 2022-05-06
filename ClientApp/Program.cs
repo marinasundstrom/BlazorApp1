@@ -50,7 +50,8 @@ builder.Services.AddHttpClient<BlazorApp1.Client.IWeatherForecastClient>("WebAPI
 builder.Services.AddHttpClient<BlazorApp1.Client.IItemsClient>("WebAPI")
     .AddTypedClient<IItemsClient>((http, sp) => new ItemsClient(http));
 
-
+builder.Services.AddHttpClient<BlazorApp1.Client.IStatusesClient>("WebAPI")
+    .AddTypedClient<IStatusesClient>((http, sp) => new StatusesClient(http));
 
 var app = builder.Build();
 

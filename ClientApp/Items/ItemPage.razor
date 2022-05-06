@@ -2,6 +2,7 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<ItemsPage> T
 @inject IItemsClient ItemsClient
+@inject IStatusesClient StatusesClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject ICurrentUserService CurrentUserService
@@ -14,11 +15,11 @@
     }
     else if (error)
     {
-        @if(notFound) 
+        @if (notFound)
         {
             <MudText Typo="Typo.h3" GutterBottom="true">Not found :(</MudText>
         }
-        else 
+        else
         {
             <MudText Typo="Typo.h3" GutterBottom="true">Something went wrong</MudText>
         }
@@ -34,6 +35,10 @@ else
 
 
     <MudText Typo="Typo.body1">@item.Description</MudText>
+
+    <MudAutocomplete T="StatusDto" Label="Status" ToStringFunc="(s) => s.Name" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
+
+    </MudAutocomplete>
 }
 
 @code {
@@ -55,7 +60,7 @@ else
         }
         catch (ApiException exc)
         {
-            if(exc.StatusCode == 404) 
+            if (exc.StatusCode == 404)
             {
                 notFound = true;
             }
@@ -68,6 +73,44 @@ else
         finally
         {
             loading = false;
+        }
+    }
+
+    IEnumerable<StatusDto>? statuses = null;
+
+    private async Task<IEnumerable<StatusDto>> Search(string value)
+    {
+        if (statuses is null)
+        {
+            statuses = await StatusesClient.GetStatusesAsync();
+        }
+
+        if (string.IsNullOrEmpty(value))
+            return statuses;
+
+        return statuses.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    async Task OnStatusChanged(StatusDto newStatus)
+    {
+        if (item!.Status.Id == newStatus.Id)
+        {
+            return;
+        }
+
+        var oldStatus = item!.Status;
+
+        try
+        {
+            await ItemsClient.UpdateStatusAsync(item.Id, new UpdateItemStatusDto { StatusId = newStatus.Id });
+
+            Snackbar.Add("Status updated.", Severity.Info);
+        }
+        catch (Exception)
+        {
+            item.Status = oldStatus;
+
+            Snackbar.Add("Failed to update status.", Severity.Error);
         }
     }
 }

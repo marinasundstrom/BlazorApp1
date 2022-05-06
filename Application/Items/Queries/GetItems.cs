@@ -42,8 +42,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
 
             var items = await query
                 .AsSplitQuery()
-                .Include(i => i.CreatedBy)
-                .Include(i => i.LastModifiedBy)
+                .IncludeAll()
                 .Select(item => item.ToDto())
                 .ToListAsync(cancellationToken);
 
