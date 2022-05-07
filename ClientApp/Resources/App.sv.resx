@@ -123,4 +123,10 @@
   <data name="RequiredError" xml:space="preserve">
     <value>Obligatoriskt</value>
   </data>
+  <data name="Available" xml:space="preserve">
+    <value>Tillgänglig</value>
+  </data>
+  <data name="Lost" xml:space="preserve">
+    <value>Borttappad</value>
+  </data>
 </root>

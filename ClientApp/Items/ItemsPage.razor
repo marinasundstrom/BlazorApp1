@@ -1,6 +1,7 @@
 ﻿@page "/items"
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<ItemsPage> T
+@inject IStringLocalizer<Resources.App> T2
 @inject IItemsClient ItemsClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
@@ -42,7 +43,7 @@
     <RowTemplate>
         <MudTd DataLabel="@T["Header_Name"]">@context.Name</MudTd>
         <MudTd DataLabel="@T["Header_Description"]">@context.Description</MudTd>
-        <MudTd DataLabel="@T["Header_Status"]">@context.Status.Name</MudTd>
+        <MudTd DataLabel="@T["Header_Status"]">@T2[context.Status.Name]</MudTd>
         <MudTd DataLabel="@T["Header_Created"]">@context.Created.ToString("g")</MudTd>
         <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy</MudTd>
         @* <MudTd DataLabel="@T["Header_LastModified"]">@context.LastModified?.ToString("g")</MudTd>

@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject IStringLocalizer<NewItemDialog> T
+@inject IStringLocalizer<Resources.App> T2
 @inject IStatusesClient StatusesClient
 
 <div style="width: 350px; max-width: 350px;">
@@ -12,7 +13,7 @@
                               @bind-Value="model.Name" For="@(() => model.Name)" />
                 <MudTextField Label="@T["Description"]" Lines="3" Class="mt-3"
                               @bind-Value="model.Description" For="@(() => model.Description)" />
-                <MudAutocomplete T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => s.Name" @bind-Value="model.Status" SearchFunc="@Search">
+                <MudAutocomplete T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" @bind-Value="model.Status" SearchFunc="@Search">
 
                 </MudAutocomplete>              
             </DialogContent>

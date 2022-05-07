@@ -1,6 +1,7 @@
 ﻿@page "/items/{Id}"
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<ItemsPage> T
+@inject IStringLocalizer<Resources.App> T2
 @inject IItemsClient ItemsClient
 @inject IStatusesClient StatusesClient
 @inject IDialogService DialogService
@@ -36,7 +37,7 @@ else
 
     <MudText Typo="Typo.body1">@item.Description</MudText>
 
-    <MudAutocomplete T="StatusDto" Label="@T["Status"]" ToStringFunc="(s) => s.Name" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
+    <MudAutocomplete T="StatusDto" Label="@T["Status"]" ToStringFunc="(s) => T2[s.Name]" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
 
     </MudAutocomplete>
 }
