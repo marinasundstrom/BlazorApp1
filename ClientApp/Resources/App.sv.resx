@@ -126,6 +126,12 @@
   <data name="Available" xml:space="preserve">
     <value>Tillgänglig</value>
   </data>
+  <data name="Sold" xml:space="preserve">
+    <value>Såld</value>
+  </data>
+  <data name="On loan" xml:space="preserve">
+    <value>Utlånad</value>
+  </data>
   <data name="Lost" xml:space="preserve">
     <value>Borttappad</value>
   </data>

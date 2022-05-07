@@ -126,6 +126,12 @@
   <data name="Available" xml:space="preserve">
     <value>Available</value>
   </data>
+  <data name="Sold" xml:space="preserve">
+    <value>Sold</value>
+  </data>
+  <data name="On loan" xml:space="preserve">
+    <value>On loan</value>
+  </data>
   <data name="Lost" xml:space="preserve">
     <value>Lost</value>
   </data>

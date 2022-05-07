@@ -125,6 +125,14 @@ public class SeedData
                 });
 
                 context.Statuses.Add(new Status {
+                    Name = "On loan"
+                });
+
+                 context.Statuses.Add(new Status {
+                    Name = "Sold"
+                });
+
+                context.Statuses.Add(new Status {
                     Name = "Lost"
                 });
 
