@@ -37,9 +37,12 @@ else
 
     <MudText Typo="Typo.body1">@item.Description</MudText>
 
-    <MudAutocomplete T="StatusDto" Label="@T["Status"]" ToStringFunc="(s) => T2[s.Name]" Value="item.Status" ValueChanged="OnStatusChanged" SearchFunc="@Search">
-
-    </MudAutocomplete>
+    <MudSelect T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" Value="item.Status" ValueChanged="OnStatusChanged">
+        @foreach (var status in statuses ?? Array.Empty<StatusDto>())
+        {
+            <MudSelectItem Value="@status">@T2[status.Name]</MudSelectItem>
+        }
+    </MudSelect>
 }
 
 @code {
@@ -47,6 +50,7 @@ else
     bool loading;
     bool error;
     bool notFound;
+    IEnumerable<StatusDto>? statuses = null;
 
     [Parameter] public string Id { get; set; } = null!;
 
@@ -54,6 +58,8 @@ else
     {
         loading = true;
         notFound = false;
+
+        statuses = await StatusesClient.GetStatusesAsync();
 
         try
         {
@@ -75,21 +81,6 @@ else
         {
             loading = false;
         }
-    }
-
-    IEnumerable<StatusDto>? statuses = null;
-
-    private async Task<IEnumerable<StatusDto>> Search(string value)
-    {
-        if (statuses is null)
-        {
-            statuses = await StatusesClient.GetStatusesAsync();
-        }
-
-        if (string.IsNullOrEmpty(value))
-            return statuses;
-
-        return statuses.Where(x => T2[x.Name].Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     async Task OnStatusChanged(StatusDto newStatus)

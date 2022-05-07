@@ -13,9 +13,12 @@
                               @bind-Value="model.Name" For="@(() => model.Name)" />
                 <MudTextField Label="@T["Description"]" Lines="3" Class="mt-3"
                               @bind-Value="model.Description" For="@(() => model.Description)" />
-                <MudAutocomplete T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" @bind-Value="model.Status" SearchFunc="@Search">
-
-                </MudAutocomplete>              
+                <MudSelect T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" @bind-Value="model.Status">
+                    @foreach(var status in statuses ?? Array.Empty<StatusDto>())
+                    {
+                        <MudSelectItem Value="@status">@T2[status.Name]</MudSelectItem>
+                    }
+                </MudSelect>            
             </DialogContent>
 
             <DialogActions>
@@ -29,10 +32,11 @@
 
 @code {
     FormModel model = new FormModel();
+    IEnumerable<StatusDto>? statuses = null;
 
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
 
-    protected override async Task OnInitializedAsync() 
+    protected override async Task OnInitializedAsync()
     {
         statuses = await StatusesClient.GetStatusesAsync();
         model.Status = statuses.First();
@@ -54,16 +58,5 @@
 
         [Required]
         public StatusDto Status { get; set; } = null!;
-    }
-
-
-    IEnumerable<StatusDto>? statuses = null;
-
-    private async Task<IEnumerable<StatusDto>> Search(string value)
-    {
-        if (string.IsNullOrEmpty(value))
-            return statuses;
-
-        return statuses.Where(x => T2[x.Name].Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 }
