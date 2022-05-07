@@ -89,7 +89,7 @@ else
         if (string.IsNullOrEmpty(value))
             return statuses;
 
-        return statuses.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return statuses.Where(x => T2[x.Name].Value.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     async Task OnStatusChanged(StatusDto newStatus)
