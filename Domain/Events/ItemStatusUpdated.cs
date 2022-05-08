@@ -1,8 +1,8 @@
 namespace BlazorApp1.Domain.Events;
 
-public class StatusUpdatedEvent : DomainEvent 
+public class ItemStatusUpdatedEvent : DomainEvent 
 {
-    public StatusUpdatedEvent(string itemId, int statusId) 
+    public ItemStatusUpdatedEvent(string itemId, int statusId) 
     {
         ItemId = itemId;
         StatusId = statusId;

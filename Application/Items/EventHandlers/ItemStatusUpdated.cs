@@ -7,18 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.EventHandlers;
 
-public class StatusUpdatedEventHandler : INotificationHandler<DomainEventNotification<StatusUpdatedEvent>>
+public class ItemStatusUpdatedEventHandler : INotificationHandler<DomainEventNotification<ItemStatusUpdatedEvent>>
 {
     private readonly IApplicationDbContext applicationDbContext;
     private readonly IEmailService emailService;
 
-    public StatusUpdatedEventHandler(IApplicationDbContext applicationDbContext, IEmailService emailService)
+    public ItemStatusUpdatedEventHandler(IApplicationDbContext applicationDbContext, IEmailService emailService)
     {
         this.applicationDbContext = applicationDbContext;
         this.emailService = emailService;
     }
 
-    public async Task Handle(DomainEventNotification<StatusUpdatedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ItemStatusUpdatedEvent> notification, CancellationToken cancellationToken)
     {
         var item = await applicationDbContext.Items.FirstAsync(i => i.Id == notification.DomainEvent.ItemId);
 

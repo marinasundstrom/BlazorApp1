@@ -26,7 +26,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
     {
         StatusId = newStatus;
 
-        DomainEvents.Add(new StatusUpdatedEvent(Id, StatusId));
+        DomainEvents.Add(new ItemStatusUpdatedEvent(Id, StatusId));
     }
 
     public DateTime? Deleted { get; set; }
