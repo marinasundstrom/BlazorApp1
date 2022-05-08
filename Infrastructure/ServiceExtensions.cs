@@ -37,12 +37,12 @@ public static class ServiceExtensions
 
     private static void AddIdentity(IServiceCollection services)
     {
-        services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            .AddRoles<IdentityRole>()
+        services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            .AddRoles<Role>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.AddIdentityServer()
-            .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(opt =>
+            .AddApiAuthorization<User, ApplicationDbContext>(opt =>
             {
                 opt.IdentityResources["openid"].UserClaims.Add("role");
                 opt.ApiResources.Single().UserClaims.Add("role");

@@ -28,7 +28,7 @@ public class ItemsTest
     {
         // Arrange
 
-        ApplicationUser user = CreateTestUser();
+        User user = CreateTestUser();
 
         var fakeDomainEventService = Substitute.For<IDomainEventService>();
 
@@ -71,9 +71,9 @@ public class ItemsTest
             .Publish(Arg.Is<ItemCreatedEvent>(d => d.ItemId == item.Id));
     }
 
-    private static ApplicationUser CreateTestUser()
+    private static User CreateTestUser()
     {
-        return new BlazorApp1.Domain.ApplicationUser
+        return new BlazorApp1.Domain.User
         {
             Id = Guid.NewGuid().ToString(),
             UserName = "test@email.com",

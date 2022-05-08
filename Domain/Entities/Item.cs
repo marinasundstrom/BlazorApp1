@@ -29,11 +29,13 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
         DomainEvents.Add(new ItemStatusUpdatedEvent(Id, StatusId));
     }
 
+    public string? ImageId { get; set; }
+
     public DateTime? Deleted { get; set; }
 
     public string? DeletedById { get; set; }
 
-    public ApplicationUser? DeletedBy { get; set; }
+    public User? DeletedBy { get; set; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

@@ -18,16 +18,16 @@ public class SeedData
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<SeedData>>();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            //await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureDeletedAsync();
             //context.Database.Migrate();
             await context.Database.EnsureCreatedAsync();
 
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
             var adminRole = await roleManager.FindByNameAsync("Administrator");
             if (adminRole is null)
             {
-                adminRole = new IdentityRole()
+                adminRole = new Role()
                 {
                     Name = "Administrator"
                 };
@@ -38,7 +38,7 @@ public class SeedData
             var userRole = await roleManager.FindByNameAsync("User");
             if (userRole is null)
             {
-                userRole = new IdentityRole()
+                userRole = new Role()
                 {
                     Name = "User"
                 };
@@ -46,12 +46,12 @@ public class SeedData
                 await roleManager.CreateAsync(userRole);
             }
 
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
             var alice = userMgr.FindByNameAsync("alice@email.com").Result;
             if (alice == null)
             {
-                alice = new ApplicationUser
+                alice = new User
                 {
                     UserName = "alice@email.com",
                     Email = "alice@email.com",
@@ -86,7 +86,7 @@ public class SeedData
             var bob = userMgr.FindByNameAsync("bob@email.com").Result;
             if (bob == null)
             {
-                bob = new ApplicationUser
+                bob = new User
                 {
                     UserName = "bob@email.com",
                     Email = "bob@email.com",

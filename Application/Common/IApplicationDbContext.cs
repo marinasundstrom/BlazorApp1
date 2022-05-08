@@ -11,7 +11,7 @@ namespace BlazorApp1.Application.Common
 
         DbSet<Status> Statuses { get; set; }
 
-        DbSet<ApplicationUser> Users { get; set; }
+        DbSet<User> Users { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

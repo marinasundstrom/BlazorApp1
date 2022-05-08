@@ -7,6 +7,6 @@ namespace BlazorApp1.Domain
 
         string? DeletedById { get; set; }
 
-        ApplicationUser? DeletedBy { get; set; }
+        User? DeletedBy { get; set; }
     }
 }

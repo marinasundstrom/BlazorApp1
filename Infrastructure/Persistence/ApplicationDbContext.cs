@@ -2,16 +2,22 @@
 using BlazorApp1.Application.Services;
 using BlazorApp1.Domain;
 
+using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Extensions;
+using Duende.IdentityServer.EntityFramework.Interfaces;
 using Duende.IdentityServer.EntityFramework.Options;
 
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace BlazorApp1.Infrastructure.Persistence;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>, IApplicationDbContext, IPersistedGrantDbContext
 {
+    private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
     private readonly IDomainEventService _domainEventService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeService _dateTime;
@@ -21,8 +27,9 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IDomainEventService domainEventService,
         ICurrentUserService currentUserService,
-        IDateTimeService dateTime) : base(options, operationalStoreOptions)
+        IDateTimeService dateTime) : base(options)
     {
+        _operationalStoreOptions = operationalStoreOptions;
         _domainEventService = domainEventService;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
@@ -34,14 +41,67 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<Status> Statuses { get; set; }
 
+    public DbSet<PersistedGrant> PersistedGrants { get; set; }
+
+    public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+
+    public DbSet<Key> Keys { get; set; }
+
 #nullable restore
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable(name: "Users");
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.ToTable(name: "Roles");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.ToTable("UserRoles");
+            //in case you chagned the TKey type
+            //  entity.HasKey(key => new { key.UserId, key.RoleId });
+        });
+
+        modelBuilder.Entity<IdentityUserClaim<string>>(entity =>
+        {
+            entity.ToTable("UserClaims");
+        });
+
+        modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
+        {
+            entity.ToTable("UserLogins");
+            //in case you chagned the TKey type
+            //  entity.HasKey(key => new { key.ProviderKey, key.LoginProvider });       
+        });
+
+        modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>
+        {
+            entity.ToTable("RoleClaims");
+
+        });
+
+        modelBuilder.Entity<IdentityUserToken<string>>(entity =>
+        {
+            entity.ToTable("UserTokens");
+            //in case you chagned the TKey type
+            // entity.HasKey(key => new { key.UserId, key.LoginProvider, key.Name });
+
+        });
     }
+
+    Task<int> IPersistedGrantDbContext.SaveChangesAsync() => base.SaveChangesAsync();
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

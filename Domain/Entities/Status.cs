@@ -13,7 +13,7 @@ public class Status : IHasDomainEvent
 
     public string? DeletedById { get; set; }
 
-    public ApplicationUser? DeletedBy { get; set; } 
+    public User? DeletedBy { get; set; } 
     */
 
     public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
