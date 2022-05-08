@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 using BlazorApp1.Application.Common;
@@ -42,13 +42,19 @@ public class ItemsTest
 
         context.Users.Add(user);
 
+        context.Statuses.Add(new Status()
+        {
+            Id = 1,
+            Name = "Created"
+        });
+
         var commandHandler = new CreateItemCommand.Handler(context);
 
         var initialHandoverCount = await context.Items.CountAsync();
 
         // Act
 
-        var createItemCommand = new CreateItemCommand("Test", "Blah");
+        var createItemCommand = new CreateItemCommand("Test", "Blah", 1);
 
         ItemDto item = await commandHandler.Handle(createItemCommand, default);
 
