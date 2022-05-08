@@ -19,4 +19,3 @@ public class Notifier : INotifier
         await _hubContext.Clients.All.Responded(message);
     }
 }
-

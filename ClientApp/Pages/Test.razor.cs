@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.JSInterop;
-using MudBlazor;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.JSInterop;
+
+using MudBlazor;
 
 namespace BlazorApp1.Client.Pages
 {
     public partial class Test
     {
-        HubConnection hubConnection = null !;
+        HubConnection hubConnection = null!;
 
         [Required]
-        public string Name { get; set; } = null !;
+        public string Name { get; set; } = null!;
 
         async Task OnSubmit()
         {

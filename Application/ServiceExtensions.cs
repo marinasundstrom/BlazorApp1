@@ -6,7 +6,7 @@ namespace BlazorApp1.Application;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services) 
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddMediatR(typeof(ServiceExtensions));
 

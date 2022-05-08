@@ -12,7 +12,7 @@ public class ThemeManager : IDisposable
     {
         _systemColorSchemeDetector = systemColorSchemeDetector;
         _systemColorSchemeDetector.ColorSchemeChanged += _systemColorSchemeDetector_ColorSchemeChanged;
-        
+
         _localStorage = localStorage;
     }
 
@@ -64,10 +64,10 @@ public class ThemeManager : IDisposable
             RaiseCurrentColorSchemeChanged();
 
         }
-       
+
         _localStorage.SetItem<ColorScheme?>(PreferredColorSchemeKey, colorScheme);
     }
-    
+
     public event EventHandler<ColorSchemeChangedEventArgs> ColorSchemeChanged = null!;
 
     public void Dispose()

@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using BlazorApp1.Application;
+using BlazorApp1.Application.Services;
+using BlazorApp1.Infrastructure;
 using BlazorApp1.WebAPI;
+using BlazorApp1.WebAPI.Hubs;
+using BlazorApp1.WebAPI.Services;
+
+using MassTransit;
+
+using MediatR;
+
+using Microsoft.AspNetCore.Authentication;
+
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using BlazorApp1.WebAPI.Hubs;
-using MassTransit;
-using BlazorApp1.WebAPI.Services;
-using BlazorApp1.Application.Services;
-using BlazorApp1.Application;
-using BlazorApp1.Infrastructure;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 

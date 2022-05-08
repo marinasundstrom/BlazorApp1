@@ -12,7 +12,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public Status Status { get; private set; } = null!;
 
-    public int StatusId { get; set; } 
+    public int StatusId { get; set; }
 
     public void SetStatus(Status newStatus)
     {
@@ -34,6 +34,6 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
     public string? DeletedById { get; set; }
 
     public ApplicationUser? DeletedBy { get; set; }
-    
+
     public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

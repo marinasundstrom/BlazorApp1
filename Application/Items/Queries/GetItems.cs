@@ -23,7 +23,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
                 .OrderByDescending(x => x.Created)
                 .AsNoTracking();
 
-            if(request.CreatedBy is not null)
+            if (request.CreatedBy is not null)
             {
                 var createdBy = request.CreatedBy;
 

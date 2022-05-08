@@ -4,6 +4,7 @@ using BlazorApp1.Domain;
 using BlazorApp1.Infrastructure.Persistence;
 
 using IdentityModel;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace BlazorApp1.WebAPI;
@@ -22,11 +23,11 @@ public class SeedData
             await context.Database.EnsureCreatedAsync();
 
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            
+
             var adminRole = await roleManager.FindByNameAsync("Administrator");
-            if(adminRole is null) 
+            if (adminRole is null)
             {
-                adminRole = new IdentityRole() 
+                adminRole = new IdentityRole()
                 {
                     Name = "Administrator"
                 };
@@ -35,9 +36,9 @@ public class SeedData
             }
 
             var userRole = await roleManager.FindByNameAsync("User");
-            if(userRole is null) 
+            if (userRole is null)
             {
-                userRole = new IdentityRole() 
+                userRole = new IdentityRole()
                 {
                     Name = "User"
                 };
@@ -46,7 +47,7 @@ public class SeedData
             }
 
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-           
+
             var alice = userMgr.FindByNameAsync("alice@email.com").Result;
             if (alice == null)
             {
@@ -117,22 +118,26 @@ public class SeedData
             {
                 logger.LogDebug("bob already exists");
             }
-            
-            if (!context.Statuses.Any()) 
+
+            if (!context.Statuses.Any())
             {
-                context.Statuses.Add(new Status {
+                context.Statuses.Add(new Status
+                {
                     Name = "Available"
                 });
 
-                context.Statuses.Add(new Status {
+                context.Statuses.Add(new Status
+                {
                     Name = "On loan"
                 });
 
-                 context.Statuses.Add(new Status {
+                context.Statuses.Add(new Status
+                {
                     Name = "Sold"
                 });
 
-                context.Statuses.Add(new Status {
+                context.Statuses.Add(new Status
+                {
                     Name = "Lost"
                 });
 

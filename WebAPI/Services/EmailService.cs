@@ -11,13 +11,13 @@ public class EmailService : IEmailService
 
     public EmailService(ILogger<EmailService> logger)
     {
-        _logger = logger;  
-        
+        _logger = logger;
+
         // Fake server
         _smtpClient = new SmtpClient("localhost", 25);
     }
 
-    public async Task SendEmail(string recipient, string subject, string body) 
+    public async Task SendEmail(string recipient, string subject, string body)
     {
         var message = new MailMessage(new MailAddress("noreply@email.com", "Test sender"), new MailAddress(recipient));
         message.Subject = subject;

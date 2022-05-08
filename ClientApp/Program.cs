@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using System.Globalization;
+
+using BlazorApp1.Client;
+using BlazorApp1.Client.Authentication;
+using BlazorApp1.Client.Theming;
+
+using Blazored.LocalStorage;
+
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using BlazorApp1.Client;
-using MudBlazor.Services;
-using System.Globalization;
 using Microsoft.JSInterop;
-using Blazored.LocalStorage;
-using BlazorApp1.Client.Theming;
-using BlazorApp1.Client.Authentication;
+
 using MudBlazor;
+using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

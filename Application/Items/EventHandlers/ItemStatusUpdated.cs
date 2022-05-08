@@ -1,8 +1,9 @@
-using BlazorApp1.Domain.Events;
+using BlazorApp1.Application.Common;
 using BlazorApp1.Application.Services;
+using BlazorApp1.Domain.Events;
 
 using MediatR;
-using BlazorApp1.Application.Common;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.EventHandlers;

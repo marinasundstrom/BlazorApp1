@@ -86,7 +86,7 @@ namespace BlazorApp1.WebAPI.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -167,12 +167,12 @@ namespace BlazorApp1.WebAPI.Areas.Identity.Pages.Account
 
                         // Process Role claims and add user to roles. 
 
-                        foreach(var role in info.Principal.Claims.Where(c => c.Type == ClaimTypes.Role))
+                        foreach (var role in info.Principal.Claims.Where(c => c.Type == ClaimTypes.Role))
                         {
                             var userRole = await _roleManager.FindByNameAsync(role.Value);
-                            if(userRole is null) 
+                            if (userRole is null)
                             {
-                                userRole = new IdentityRole() 
+                                userRole = new IdentityRole()
                                 {
                                     Name = role.Value
                                 };

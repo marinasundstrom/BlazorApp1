@@ -1,5 +1,5 @@
-﻿using BlazorApp1.Domain.Events;
-using BlazorApp1.Application.Services;
+﻿using BlazorApp1.Application.Services;
+using BlazorApp1.Domain.Events;
 
 using MassTransit;
 
@@ -22,7 +22,7 @@ public class WorkerResponseConsumer : IConsumer<WorkerResponse>
 
         var ev = new ResponseReceivedEvent(response.Text);
         ev.IsPublished = true;
-        
+
         await _domainEventService.Publish(ev);
     }
 }

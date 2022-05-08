@@ -26,7 +26,7 @@ public class SystemColorSchemeDetector : IDisposable
     }
 
     public ColorScheme CurrentColorScheme => _jsRuntime.Invoke<bool>("isDarkMode") ? ColorScheme.Dark : ColorScheme.Light;
-    
+
     public static class Internal
     {
         [JSInvokable("OnDarkModeChanged")]

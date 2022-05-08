@@ -1,6 +1,7 @@
+using BlazorApp1.Domain;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using BlazorApp1.Domain;
 
 namespace BlazorApp1.Infrastructure.Persistence.Configurations;
 

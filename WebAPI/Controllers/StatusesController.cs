@@ -1,9 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using BlazorApp1.Application;
 using BlazorApp1.Application.Items;
 using BlazorApp1.Application.Items.Queries;
-using BlazorApp1.Application;
+
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApp1.WebAPI.Items.Controllers;
 

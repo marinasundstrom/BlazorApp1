@@ -8,7 +8,7 @@ namespace BlazorApp1.Domain
             DateOccurred = DateTimeOffset.UtcNow;
         }
         public bool IsPublished { get; set; }
-        
+
         public DateTimeOffset DateOccurred { get; protected set; } = DateTime.UtcNow;
     }
 }

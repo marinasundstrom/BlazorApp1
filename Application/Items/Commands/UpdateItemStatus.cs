@@ -22,7 +22,8 @@ public record UpdateItemStatusCommand(string Id, int StatusId) : IRequest
         {
             var item = await context.Items.FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
-            if (item is null) {
+            if (item is null)
+            {
                 throw new Exception();
             }
 

@@ -1,8 +1,8 @@
 ﻿namespace BlazorApp1.Domain.Events;
 
-public class ItemDeletedEvent : DomainEvent 
+public class ItemDeletedEvent : DomainEvent
 {
-    public ItemDeletedEvent(string itemId) 
+    public ItemDeletedEvent(string itemId)
     {
         ItemId = itemId;
     }

@@ -1,10 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using BlazorApp1.Application;
 using BlazorApp1.Application.Items;
-using BlazorApp1.Application.Items.Queries;
-using BlazorApp1.Application;
 using BlazorApp1.Application.Items.Commands;
+using BlazorApp1.Application.Items.Queries;
+
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorApp1.WebAPI.Items.Controllers;
 
@@ -28,7 +30,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult<PagedResult<ItemDto>>> GetItems(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
-        if(result is Result<PagedResult<ItemDto>, Exception>.Error(Exception Error)) 
+        if (result is Result<PagedResult<ItemDto>, Exception>.Error(Exception Error))
         {
             return BadRequest();
         }
@@ -43,7 +45,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult<ItemDto>> GetItemAsync(string id)
     {
         var item = await mediator.Send(new GetItemQuery(id));
-        if(item is null) 
+        if (item is null)
         {
             return NotFound();
         }

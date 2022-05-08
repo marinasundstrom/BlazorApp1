@@ -5,4 +5,3 @@ public interface INotifier
 {
     Task Notify(string message);
 }
-

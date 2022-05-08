@@ -22,12 +22,13 @@ public record DeleteItemCommand(string Id) : IRequest
         {
             var item = await context.Items.FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
-            if (item is null) {
+            if (item is null)
+            {
                 throw new Exception();
             }
 
             context.Items.Remove(item);
-            
+
             item.DomainEvents.Add(new ItemDeletedEvent(item.Id));
 
             await context.SaveChangesAsync(cancellationToken);

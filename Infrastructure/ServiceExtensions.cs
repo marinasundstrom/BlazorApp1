@@ -48,6 +48,6 @@ public static class ServiceExtensions
                 opt.ApiResources.Single().UserClaims.Add("role");
             });
 
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");            
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
     }
 }

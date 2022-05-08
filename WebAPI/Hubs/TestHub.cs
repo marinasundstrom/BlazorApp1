@@ -26,7 +26,7 @@ public class TestHub : Hub<ITestClient>
         //await Groups.AddToGroupAsync(Context.ConnectionId, "MyGroup");
     }
 
-    public async Task SayHi(string yourName) 
+    public async Task SayHi(string yourName)
     {
         await _publishEndpoint.Publish(new WorkerMessage(yourName));
 

@@ -1,5 +1,5 @@
-﻿using BlazorApp1.Domain.Events;
-using BlazorApp1.Application.Services;
+﻿using BlazorApp1.Application.Services;
+using BlazorApp1.Domain.Events;
 
 using MediatR;
 
