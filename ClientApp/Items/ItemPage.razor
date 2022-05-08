@@ -96,13 +96,13 @@ else
         {
             await ItemsClient.UpdateStatusAsync(item.Id, new UpdateItemStatusDto { StatusId = newStatus.Id });
 
-            Snackbar.Add("Status updated.", Severity.Info);
+            Snackbar.Add(T["StatusUpdated"], Severity.Info);
         }
         catch (Exception)
         {
             item.Status = oldStatus;
 
-            Snackbar.Add("Failed to update status.", Severity.Error);
+            Snackbar.Add(T["StatusUpdatedFailed"], Severity.Error);
         }
     }
 }

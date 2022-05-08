@@ -195,4 +195,10 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="StatusUpdated" xml:space="preserve">
+    <value>Status har uppdaterats.</value>
+  </data>
+  <data name="StatusUpdatedFailed" xml:space="preserve">
+    <value>Kunde inte uppdatera status.</value>
+  </data>
 </root>
