@@ -34,20 +34,27 @@ else
 
     <MudText Typo="Typo.caption" GutterBottom="true">Created by @item.CreatedBy at @item.Created.ToString("g")</MudText>
 
-    @if(item.Image is not null) 
-    {
-        <br />
-        <MudImage Src="@item.Image" Alt="Item picture" ObjectFit="ObjectFit.Cover" Elevation="25" Width="332" Height="250" Class="rounded-lg"/>
-    }
-
-    <MudText Typo="Typo.body1">@item.Description</MudText>
-
-    <MudSelect T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" Value="item.Status" ValueChanged="OnStatusChanged">
-        @foreach (var status in statuses ?? Array.Empty<StatusDto>())
+    <MudGrid class="mt-4">
+        @if (item.Image is not null)
         {
-            <MudSelectItem Value="@status">@T2[status.Name]</MudSelectItem>
+            <MudItem xs="12" md="4">
+                <MudImage Src="@item.Image" Alt="Item picture" ObjectFit="ObjectFit.Cover" Elevation="25" Width="250" Class="rounded-lg" />
+            </MudItem>
         }
-    </MudSelect>
+
+        <MudItem xs="12" md="8">
+            <MudPaper Elevation="25" Class="pa-4">
+                <MudText Typo="Typo.body1">@item.Description</MudText>
+
+                <MudSelect T="StatusDto" Label="@T["Status"]" Class="mt-3" ToStringFunc="(s) => T2[s.Name]" Value="item.Status" ValueChanged="OnStatusChanged">
+                    @foreach (var status in statuses ?? Array.Empty<StatusDto>())
+                    {
+                        <MudSelectItem Value="@status">@T2[status.Name]</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
 }
 
 @code {
