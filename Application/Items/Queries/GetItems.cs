@@ -41,7 +41,7 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
                     request.SortBy, request.SortDirection.GetValueOrDefault());
             }
 
-            query = query.Skip(request.Page * request.PageSize)
+            query = query.Skip((request.Page - 1) * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
 
             var items = await query

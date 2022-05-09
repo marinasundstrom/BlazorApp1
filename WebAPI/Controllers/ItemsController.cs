@@ -27,7 +27,7 @@ public class ItemsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<PagedResult<ItemDto>>> GetItems(int page = 1, int pageSize = 0, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
+    public async Task<ActionResult<PagedResult<ItemDto>>> GetItems(int page = 1, int pageSize = 10, string? createdBy = null, string? sortBy = null, SortDirection? sortDirection = null)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, createdBy, sortBy, sortDirection));
         if (result is Result<PagedResult<ItemDto>, Exception>.Error(Exception Error))

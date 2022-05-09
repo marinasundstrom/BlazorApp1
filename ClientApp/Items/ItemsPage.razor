@@ -72,7 +72,7 @@
     {
         try
         {
-            var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, createdBy,
+            var results = await ItemsClient.GetItemsAsync(state.Page + 1, state.PageSize, createdBy,
                 state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Client.SortDirection.Asc : Client.SortDirection.Desc);
 
             return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
