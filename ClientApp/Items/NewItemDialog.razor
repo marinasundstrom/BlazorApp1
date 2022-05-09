@@ -22,31 +22,33 @@
                     }
                 </MudSelect>
 
-                <InputFile id="fileInput2" OnChange="UploadFiles" Class="mt-3" hidden accept=".jpg, .jpeg, .png" />
+                <div class="mt-4">
+                    <InputFile id="fileInput2" OnChange="UploadFiles" Class="mt-3" hidden accept=".jpg, .jpeg, .png" />
 
                     <MudButton HtmlTag="label"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               StartIcon="@Icons.Filled.CloudUpload"
-                               for="fileInput2"
-                               Class="mt-3">
+                            Variant="Variant.Filled"
+                            Color="Color.Primary"
+                            StartIcon="@Icons.Filled.CloudUpload"
+                            for="fileInput2"
+                            Class="mt-3">
                         @(model.Stream is null ? T["UploadImage"] : T["ChooseAnotherImage"])
                     </MudButton>
 
-                @if (model.Stream is not null)
-                {
-                    <MudIconButton Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Filled.Remove"
-                    Class="ml-3 mt-3" OnClick="() => { model.Stream = null; imageBytes = null; }">
-                    </MudIconButton>
-
-                    @if (imageBytes is not null)
+                    @if (model.Stream is not null)
                     {
-                        <img style="height: 150px; margin-top: 15px"
-                            src="data:image/png;base64,@Convert.ToBase64String(imageBytes)" />
-                    }
-                }
+                        <MudIconButton Variant="Variant.Filled" Color="Color.Secondary" Icon="@Icons.Filled.Remove"
+                        Class="ml-3 mt-3" OnClick="() => { model.Stream = null; imageBytes = null; }">
+                        </MudIconButton>
 
-                <MudText Typo="Typo.subtitle2" GutterBottom="true" Class="mt-3">Max 2 mb.</MudText>
+                        @if (imageBytes is not null)
+                        {
+                            <img style="height: 150px; margin-top: 15px"
+                                src="data:image/png;base64,@Convert.ToBase64String(imageBytes)" />
+                        }
+                    }
+
+                    <MudText Typo="Typo.subtitle2" GutterBottom="true" Class="mt-3">@T2["Optional"]. Max 2 MB.</MudText>
+                </div>
             </DialogContent>
 
             <DialogActions>

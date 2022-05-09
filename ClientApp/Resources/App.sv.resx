@@ -135,4 +135,10 @@
   <data name="Lost" xml:space="preserve">
     <value>Borttappad</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Obligatorisk</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Frivillig</value>
+  </data>
 </root>

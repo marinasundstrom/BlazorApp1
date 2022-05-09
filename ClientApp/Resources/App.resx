@@ -135,4 +135,10 @@
   <data name="Lost" xml:space="preserve">
     <value>Lost</value>
   </data>
+  <data name="Required" xml:space="preserve">
+    <value>Lost</value>
+  </data>
+  <data name="Optional" xml:space="preserve">
+    <value>Optional</value>
+  </data>
 </root>
