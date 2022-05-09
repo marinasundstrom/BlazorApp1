@@ -29,7 +29,7 @@
 </AuthorizeView>
 
 
-<MudTable T="ItemDto" MultiSelection="@selectMultiple" @bind-SelectedItems="selectedItems" Elevation="0" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="ItemClicked" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="ItemDto" MultiSelection="@selectMultiple" @bind-SelectedItems="selectedItems" Elevation="25" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="ItemClicked" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info" class="mt-4">
     <HeaderContent>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">@T["Header_Description"]</MudTableSortLabel></MudTh>
