@@ -31,6 +31,8 @@ public record CreateItemCommand(string Name, string Description, int StatusId) :
                 StatusId = request.StatusId
             };
 
+            item.Id = Guider.ToUrlFriendlyString(Guid.Parse(item.Id));
+
             context.Items.Add(item);
 
             item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
