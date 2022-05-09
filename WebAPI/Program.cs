@@ -1,4 +1,7 @@
-﻿using BlazorApp1.Application;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
+
+using BlazorApp1.Application;
 using BlazorApp1.Application.Services;
 using BlazorApp1.Infrastructure;
 using BlazorApp1.WebAPI;
@@ -7,14 +10,15 @@ using BlazorApp1.WebAPI.Services;
 
 using MassTransit;
 
-using MediatR;
-
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Azure;
 
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var Configuration = builder.Configuration;
 
 builder.Services
     .AddApplication()
@@ -79,6 +83,28 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<INotifier, Notifier>();
+builder.Services.AddScoped<IItemsNotifier, ItemsNotifier>();
+
+builder.Services.AddScoped<IFileUploaderService, FileUploaderService>();
+builder.Services.AddScoped<IUrlHelper, UrlHelper>();
+
+builder.Services.AddAzureClients(builder =>
+{
+    // Add a KeyVault client
+    //builder.AddSecretClient(keyVaultUrl);
+
+    // Add a Storage account client
+    builder.AddBlobServiceClient(Configuration.GetConnectionString("Azure:Storage"))
+                    .WithVersion(BlobClientOptions.ServiceVersion.V2019_07_07);
+
+    // Use DefaultAzureCredential by default
+    builder.UseCredential(new DefaultAzureCredential());
+});
+
+// Add the reverse proxy capability to the server
+var proxyBuilder = builder.Services.AddReverseProxy();
+// Initialize the reverse proxy from the "ReverseProxy" section of configuration
+proxyBuilder.LoadFromConfig(Configuration.GetSection("ReverseProxy"));
 
 builder.Services.AddMassTransit(x =>
 {
@@ -131,6 +157,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllers();
 app.MapHub<TestHub>("/hubs/test");
+app.MapHub<ItemsHub>("/hubs/items");
+
+app.MapReverseProxy();
+
 app.MapFallbackToFile("index.html");
 
 await SeedData.EnsureSeedData(app);

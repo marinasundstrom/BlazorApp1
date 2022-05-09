@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Application.Services;
 using BlazorApp1.Domain;
 
 using MediatR;
@@ -12,10 +13,12 @@ public record GetItemQuery(string Id) : IRequest<ItemDto?>
     public class Handler : IRequestHandler<GetItemQuery, ItemDto?>
     {
         private readonly IApplicationDbContext context;
+        private readonly IUrlHelper _urlHelper;
 
-        public Handler(IApplicationDbContext context)
+        public Handler(IApplicationDbContext context, IUrlHelper urlHelper)
         {
             this.context = context;
+            _urlHelper = urlHelper;
         }
 
         public async Task<ItemDto?> Handle(GetItemQuery request, CancellationToken cancellationToken)
@@ -27,7 +30,7 @@ public record GetItemQuery(string Id) : IRequest<ItemDto?>
                 //.IgnoreQueryFilters()
                 .FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
-            return item?.ToDto();
+            return item?.ToDto(_urlHelper);
         }
     }
 }

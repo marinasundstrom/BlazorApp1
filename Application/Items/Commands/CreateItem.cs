@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Application.Services;
 using BlazorApp1.Domain;
 using BlazorApp1.Domain.Events;
 
@@ -13,10 +14,12 @@ public record CreateItemCommand(string Name, string Description, int StatusId) :
     public class Handler : IRequestHandler<CreateItemCommand, Result<ItemDto, Exception>>
     {
         private readonly IApplicationDbContext context;
+        private readonly IUrlHelper _urlHelper;
 
-        public Handler(IApplicationDbContext context)
+        public Handler(IApplicationDbContext context, IUrlHelper urlHelper)
         {
             this.context = context;
+            _urlHelper = urlHelper;
         }
 
         public async Task<Result<ItemDto, Exception>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
@@ -40,7 +43,7 @@ public record CreateItemCommand(string Name, string Description, int StatusId) :
                 .IncludeAll()
                 .FirstAsync(i => i.Id == item.Id, cancellationToken);
 
-            return new Result<ItemDto, Exception>.Ok(item.ToDto());
+            return new Result<ItemDto, Exception>.Ok(item.ToDto(_urlHelper));
         }
     }
 }

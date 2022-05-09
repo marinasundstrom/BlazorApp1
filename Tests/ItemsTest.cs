@@ -38,6 +38,9 @@ public class ItemsTest
         var fakeDateTimeService = Substitute.For<IDateTimeService>();
         fakeDateTimeService.Now.Returns(x => DateTime.Now);
 
+        var fakeUrlHelper = Substitute.For<IUrlHelper>();
+        fakeUrlHelper.CreateImageUrl(Arg.Any<string>()).Returns(x => $"http://image/{x.Arg<string>()}");
+
         using IApplicationDbContext context = CreateDbContext(fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
 
         context.Users.Add(user);
@@ -48,7 +51,7 @@ public class ItemsTest
             Name = "Created"
         });
 
-        var commandHandler = new CreateItemCommand.Handler(context);
+        var commandHandler = new CreateItemCommand.Handler(context, fakeUrlHelper);
 
         var initialHandoverCount = await context.Items.CountAsync();
 

@@ -34,6 +34,11 @@ else
 
     <MudText Typo="Typo.caption" GutterBottom="true">Created by @item.CreatedBy at @item.Created.ToString("g")</MudText>
 
+    @if(item.Image is not null) 
+    {
+        <br />
+        <MudImage Src="@item.Image" Alt="Item picture" ObjectFit="ObjectFit.Cover" Elevation="25" Width="332" Height="250" Class="rounded-lg"/>
+    }
 
     <MudText Typo="Typo.body1">@item.Description</MudText>
 

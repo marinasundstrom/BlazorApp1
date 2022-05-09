@@ -127,13 +127,18 @@
 
         try
         {
-            await ItemsClient.CreateItemAsync(new CreateItemDto()
+            var item = await ItemsClient.CreateItemAsync(new CreateItemDto()
                 {
                     Name = model.Name,
                     Description = model.Description,
                     StatusId = model.Status.Id
                 });
 
+            if(model.Stream is not null)
+            {
+                await ItemsClient.UploadImageAsync(item.Id, new FileParameter(model.Stream, model.FileName, model.ContentType));
+            }
+            
             await table.ReloadServerData();
         }
         catch (Exception exc)

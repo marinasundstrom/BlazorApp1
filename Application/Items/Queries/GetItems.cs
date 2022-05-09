@@ -1,4 +1,5 @@
 ﻿using BlazorApp1.Application.Common;
+using BlazorApp1.Application.Services;
 
 using MediatR;
 
@@ -11,10 +12,12 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
     public class Handler : IRequestHandler<GetItemsQuery, Result<PagedResult<ItemDto>, Exception>>
     {
         private readonly IApplicationDbContext context;
+        private readonly IUrlHelper _urlHelper;
 
-        public Handler(IApplicationDbContext context)
+        public Handler(IApplicationDbContext context, IUrlHelper urlHelper)
         {
             this.context = context;
+            _urlHelper = urlHelper;
         }
 
         public async Task<Result<PagedResult<ItemDto>, Exception>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
@@ -44,10 +47,11 @@ public record GetItemsQuery(int Page, int PageSize, string? CreatedBy, string? S
             var items = await query
                 .AsSplitQuery()
                 .IncludeAll()
-                .Select(item => item.ToDto())
                 .ToListAsync(cancellationToken);
 
-            return new Result<PagedResult<ItemDto>, Exception>.Ok(new PagedResult<ItemDto>(items, request.Page, totalCount));
+            var items2 = items.Select(item => item.ToDto(_urlHelper));
+
+            return new Result<PagedResult<ItemDto>, Exception>.Ok(new PagedResult<ItemDto>(items2, request.Page, totalCount));
         }
     }
 }

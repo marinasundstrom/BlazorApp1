@@ -132,4 +132,10 @@
   <data name="Status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="UploadImage" xml:space="preserve">
+    <value>Ladda upp bild</value>
+  </data>
+  <data name="ChooseAnotherImage" xml:space="preserve">
+    <value>Välj en annan</value>
+  </data>
 </root>

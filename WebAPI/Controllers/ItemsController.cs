@@ -42,9 +42,9 @@ public class ItemsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<ItemDto>> GetItemAsync(string id)
+    public async Task<ActionResult<ItemDto>> GetItemAsync(string id, CancellationToken cancellationToken)
     {
-        var item = await mediator.Send(new GetItemQuery(id));
+        var item = await mediator.Send(new GetItemQuery(id), cancellationToken);
         if (item is null)
         {
             return NotFound();
@@ -53,28 +53,36 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task CreateItem([FromBody] CreateItemDto value)
+    public async Task<ItemDto> CreateItem([FromBody] CreateItemDto value, CancellationToken cancellationToken)
     {
-        await mediator.Send(new CreateItemCommand(value.Name, value.Description, value.StatusId));
+        return await mediator.Send(new CreateItemCommand(value.Name, value.Description, value.StatusId), cancellationToken);
+    }
+
+    [HttpPost("{id}/UploadImage")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task UploadImage([FromRoute] string id, IFormFile file, CancellationToken cancellationToken = default)
+    {
+        await mediator.Send(new UploadItemImageCommand(id, file.OpenReadStream(), file.Name, file.ContentType), cancellationToken);
     }
 
     [HttpPut("{id}/Status")]
-    public async Task UpdateStatus(string id, [FromBody] UpdateItemStatusDto value)
+    public async Task UpdateStatus(string id, [FromBody] UpdateItemStatusDto value, CancellationToken cancellationToken)
     {
-        await mediator.Send(new UpdateItemStatusCommand(id, value.StatusId));
+        await mediator.Send(new UpdateItemStatusCommand(id, value.StatusId), cancellationToken);
     }
 
 
     [HttpPut("{id}/Description")]
-    public async Task UpdateDescription(string id, [FromBody] UpdateItemDescriptionDto value)
+    public async Task UpdateDescription(string id, [FromBody] UpdateItemDescriptionDto value, CancellationToken cancellationToken)
     {
-        await mediator.Send(new UpdateItemDescriptionCommand(id, value.Description));
+        await mediator.Send(new UpdateItemDescriptionCommand(id, value.Description), cancellationToken);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteItem(string id)
+    public async Task DeleteItem(string id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteItemCommand(id));
+        await mediator.Send(new DeleteItemCommand(id), cancellationToken);
     }
 }
 

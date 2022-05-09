@@ -18,7 +18,7 @@ public class SeedData
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<SeedData>>();
 
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            await context.Database.EnsureDeletedAsync();
+            //await context.Database.EnsureDeletedAsync();
             //context.Database.Migrate();
             await context.Database.EnsureCreatedAsync();
 
