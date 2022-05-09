@@ -24,7 +24,7 @@ public class CurrentUserService : ICurrentUserService
         var name = user?.FindFirst("sub")?.Value;
 
 #if DEBUG
-        Console.WriteLine("User Id: {0}", name);
+        //Console.WriteLine("User Id: {0}", name);
 #endif
 
         return name;
@@ -34,13 +34,18 @@ public class CurrentUserService : ICurrentUserService
     {
         ClaimsPrincipal user = await GetUser();
 
-        var actualRole = user?.FindFirst("role")?.Value;
+        var roles = user?.FindAll("role");
+
+        if (roles is null)
+        {
+            return false;
+        }
 
 #if DEBUG
-        Console.WriteLine("Role: {0}", actualRole);
+        //Console.WriteLine("Roles: {0}", string.Join(", ", roles.Select(c => c.Value)));
 #endif
 
-        return actualRole == role;
+        return roles.Any(c => c.Value == role);
     }
 
     private async Task<ClaimsPrincipal> GetUser()
