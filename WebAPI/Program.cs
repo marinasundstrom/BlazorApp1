@@ -4,9 +4,13 @@ using Azure.Storage.Blobs;
 using BlazorApp1.Application;
 using BlazorApp1.Application.Services;
 using BlazorApp1.Infrastructure;
+using BlazorApp1.Infrastructure.Persistence;
+using BlazorApp1.Infrastructure.Persistence.Configurations;
 using BlazorApp1.WebAPI;
 using BlazorApp1.WebAPI.Hubs;
 using BlazorApp1.WebAPI.Services;
+
+using Duende.IdentityServer.Services;
 
 using MassTransit;
 
@@ -53,6 +57,8 @@ builder.Services.AddAuthentication()
 //     };
 // });
 
+builder.Services.AddTransient<IProfileService, MyProfileService>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -79,6 +85,7 @@ builder.Services.AddOpenApiDocument(document =>
             document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
         });
 
+builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 

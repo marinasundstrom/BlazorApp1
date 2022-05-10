@@ -1,6 +1,7 @@
 ﻿using BlazorApp1.Application.Common;
 using BlazorApp1.Application.Services;
 using BlazorApp1.Domain;
+using BlazorApp1.Infrastructure.Persistence.Configurations;
 
 using Duende.IdentityServer.EntityFramework.Entities;
 using Duende.IdentityServer.EntityFramework.Extensions;
@@ -21,18 +22,24 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
     private readonly IDomainEventService _domainEventService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeService _dateTime;
+    private readonly ITenantService _tenantService;
+    private readonly string? _tenantId;
 
     public ApplicationDbContext(
         DbContextOptions options,
         IOptions<OperationalStoreOptions> operationalStoreOptions,
         IDomainEventService domainEventService,
         ICurrentUserService currentUserService,
-        IDateTimeService dateTime) : base(options)
+        IDateTimeService dateTime,
+        ITenantService tenantService) : base(options)
     {
         _operationalStoreOptions = operationalStoreOptions;
         _domainEventService = domainEventService;
         _currentUserService = currentUserService;
         _dateTime = dateTime;
+        _tenantService = tenantService;
+
+        _tenantId = _tenantService.TenantId;
     }
 
 #nullable disable
@@ -56,6 +63,11 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
         modelBuilder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+        modelBuilder.Entity<Item>(entity =>
+        {
+            entity.HasQueryFilter(e => e.TenantId == _tenantId);
+        });
 
         modelBuilder.Entity<User>(entity =>
         {
@@ -111,6 +123,11 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
             {
                 entry.Entity.Created = _dateTime.Now;
                 entry.Entity.CreatedById = _currentUserService.UserId!;
+
+                if (entry.Entity is IHasTenant e)
+                {
+                    e.TenantId = _tenantService.TenantId!;
+                }
             }
             else if (entry.State == EntityState.Modified)
             {

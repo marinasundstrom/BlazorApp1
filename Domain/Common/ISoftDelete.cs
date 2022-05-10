@@ -1,12 +1,11 @@
 ﻿
-namespace BlazorApp1.Domain
+namespace BlazorApp1.Domain;
+
+public interface ISoftDelete
 {
-    public interface ISoftDelete
-    {
-        DateTime? Deleted { get; set; }
+    DateTime? Deleted { get; set; }
 
-        string? DeletedById { get; set; }
+    string? DeletedById { get; set; }
 
-        User? DeletedBy { get; set; }
-    }
+    User? DeletedBy { get; set; }
 }

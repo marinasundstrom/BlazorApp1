@@ -1,8 +1,7 @@
 ﻿
-namespace BlazorApp1.Domain
+namespace BlazorApp1.Domain;
+
+public interface IHasDomainEvent
 {
-    public interface IHasDomainEvent
-    {
-        public List<DomainEvent> DomainEvents { get; set; }
-    }
+    public List<DomainEvent> DomainEvents { get; set; }
 }

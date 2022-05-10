@@ -21,8 +21,16 @@ public static class ServiceExtensions
     {
         var connectionString = configuration.GetConnectionString(ConnectionStringKey);
 
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure()));
+        services.AddScoped<MyInterceptor>();
+
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
+            options.AddInterceptors(sp.GetRequiredService<MyInterceptor>());
+#if DEBUG
+            options.EnableSensitiveDataLogging();
+#endif
+        });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
 
@@ -44,6 +52,8 @@ public static class ServiceExtensions
         services.AddIdentityServer()
             .AddApiAuthorization<User, ApplicationDbContext>(opt =>
             {
+                // Is this necessary with a profile?
+
                 opt.IdentityResources["openid"].UserClaims.Add("role");
                 opt.ApiResources.Single().UserClaims.Add("role");
             });

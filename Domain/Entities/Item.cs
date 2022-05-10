@@ -2,9 +2,11 @@
 
 namespace BlazorApp1.Domain;
 
-public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
+public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent, IHasTenant
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    public string TenantId { get; set; } = null!;
 
     public string Name { get; set; } = null!;
 
@@ -20,7 +22,6 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 
         SetStatus(Status.Id);
     }
-
 
     public void SetStatus(int newStatus)
     {

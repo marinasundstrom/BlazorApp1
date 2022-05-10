@@ -41,7 +41,10 @@ public class ItemsTest
         var fakeUrlHelper = Substitute.For<IUrlHelper>();
         fakeUrlHelper.CreateImageUrl(Arg.Any<string>()).Returns(x => $"http://image/{x.Arg<string>()}");
 
-        using IApplicationDbContext context = CreateDbContext(fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
+        var fakeTenantService = Substitute.For<ITenantService>();
+        fakeTenantService.TenantId.Returns(x => "1");
+
+        using IApplicationDbContext context = CreateDbContext(fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService, fakeTenantService);
 
         context.Users.Add(user);
 
@@ -84,7 +87,7 @@ public class ItemsTest
         };
     }
 
-    private static IApplicationDbContext CreateDbContext(IDomainEventService fakeDomainEventService, ICurrentUserService fakeCurrentUserService, IDateTimeService fakeDateTimeService)
+    private static IApplicationDbContext CreateDbContext(IDomainEventService fakeDomainEventService, ICurrentUserService fakeCurrentUserService, IDateTimeService fakeDateTimeService, ITenantService fakeTenantService)
     {
         var duendeOptions = Substitute.For<Microsoft.Extensions.Options.IOptions<OperationalStoreOptions>>();
         duendeOptions.Value.Returns(x => new OperationalStoreOptions()
@@ -96,6 +99,6 @@ public class ItemsTest
            .UseInMemoryDatabase(databaseName: "Test")
            .Options;
 
-        return new ApplicationDbContext(options, duendeOptions, fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService);
+        return new ApplicationDbContext(options, duendeOptions, fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService, fakeTenantService);
     }
 }
