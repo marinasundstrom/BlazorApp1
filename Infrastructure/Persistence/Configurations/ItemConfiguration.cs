@@ -10,7 +10,9 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
     public void Configure(EntityTypeBuilder<Item> builder)
     {
         builder.ToTable("Items");
-        builder.HasQueryFilter(i => i.Deleted == null);
+
+        // NOTE: Defined in ApplicationDbContext to allow for multi-tenancy.
+        // builder.HasQueryFilter(i => i.Deleted == null);
 
         builder.Ignore(i => i.DomainEvents);
     }

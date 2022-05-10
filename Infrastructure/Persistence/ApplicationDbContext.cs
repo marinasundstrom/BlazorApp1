@@ -73,7 +73,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
     {
         modelBuilder.Entity<Item>(entity =>
         {
-            entity.HasQueryFilter(e => e.TenantId == _tenantId);
+            entity.HasQueryFilter(e => e.TenantId == _tenantId && e.Deleted == null);
         });
     }
 
