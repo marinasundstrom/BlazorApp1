@@ -6,7 +6,7 @@ The main purpose is to show how to set all this up.
 
 This project started off as a merger of the Blazor Hosted with Individual Auth template and the MudBlazor Hosted templates. 
 
-Recently, the project has been restructured into a layered app, adhering to the practices of Domain-driven design (DDD)
+Recently, the project has been restructured into a layered app, adhering to the practices of Domain-driven design (DDD). It implements Command Query Responsibility Segregation (CQRS) with the Mediator pattern.
 
 Contents described further below:
 
@@ -32,6 +32,13 @@ The app comes with this:
 * .NET Tye - Development orchestrator
 
 There is also a Worker service, using MassTransit with RabbitMQ as transport.
+
+Some other notable features:
+
+* Multi-tenancy - at Data Access Layer
+* Azure Blob storage integration (Emulated)
+* Smtp4Dev as a test e-mail server.
+* Light/Dark mode
 
 ## Prerequisites
 
