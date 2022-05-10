@@ -1,31 +1,25 @@
-﻿using System.Net.Mail;
+﻿using BlazorApp1.Application.Services;
 
-using BlazorApp1.Application.Services;
+using MassTransit;
+
+using Worker.Contracts;
 
 namespace BlazorApp1.WebAPI.Services;
 
 public class EmailService : IEmailService
 {
     private readonly ILogger<EmailService> _logger;
-    private readonly SmtpClient _smtpClient;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public EmailService(ILogger<EmailService> logger)
+    public EmailService(ILogger<EmailService> logger, IPublishEndpoint publishEndpoint)
     {
         _logger = logger;
-
-        // Fake server
-        _smtpClient = new SmtpClient("localhost", 25);
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task SendEmail(string recipient, string subject, string body)
     {
-        var message = new MailMessage(new MailAddress("noreply@email.com", "Test sender"), new MailAddress(recipient));
-        message.Subject = subject;
-        message.Body = body;
-        message.IsBodyHtml = true;
-        message.BodyEncoding = System.Text.Encoding.UTF8;
-
-        await _smtpClient.SendMailAsync(message);
+        await _publishEndpoint.Publish(new SendEmail(recipient, subject, body));
 
         _logger.LogInformation("Email was sent.");
     }

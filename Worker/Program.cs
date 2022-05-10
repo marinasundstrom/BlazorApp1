@@ -1,6 +1,7 @@
-using MassTransit;
+﻿using MassTransit;
 
 using Worker.Consumers;
+using Worker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,9 @@ builder.Services.AddMassTransit(x =>
     x.SetKebabCaseEndpointNameFormatter();
 
     //x.AddConsumers(typeof(Program).Assembly);
+
     x.AddConsumer<WorkerMessageConsumer>();
+    x.AddConsumer<SendEmailConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -18,6 +21,8 @@ builder.Services.AddMassTransit(x =>
 })
 .AddMassTransitHostedService(true)
 .AddGenericRequestClient();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
@@ -30,5 +35,3 @@ app.MapGet("/", () => "Hello World!");
         .Produces<GreetingsResponse>(StatusCodes.Status200OK); */
 
 app.Run();
-
-public record GreetingsResponse(string Message);
