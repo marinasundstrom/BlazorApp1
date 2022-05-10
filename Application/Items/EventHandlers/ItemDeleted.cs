@@ -27,7 +27,7 @@ public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotificat
             .IgnoreQueryFilters()
             .FirstAsync(i => i.Id == notification.DomainEvent.ItemId, cancellationToken);
 
-        if(item.ImageId is not null)
+        if (item.ImageId is not null)
         {
             await _fileUploaderService.DeleteFileAsync(item.ImageId, cancellationToken);
         }

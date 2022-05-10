@@ -48,7 +48,7 @@ public record UploadItemImageCommand(string Id, Stream Stream, string FileName, 
     }
 }
 
-public enum UploadImageResult 
+public enum UploadImageResult
 {
     Successful,
 }

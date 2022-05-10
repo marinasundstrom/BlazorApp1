@@ -25,7 +25,7 @@ public static class Guider
 
         Span<char> finalChars = stackalloc char[22];
 
-        for(var i = 0; i < 22; i++)
+        for (var i = 0; i < 22; i++)
         {
             finalChars[i] = base64Bytes[i] switch
             {
@@ -42,7 +42,7 @@ public static class Guider
     {
         Span<char> base64Chars = stackalloc char[24];
 
-        for(int i = 0; i < 22; i++)
+        for (int i = 0; i < 22; i++)
         {
             base64Chars[i] = id[i] switch
             {
