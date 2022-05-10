@@ -64,11 +64,21 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
+        ConfigTenantFilter(modelBuilder);
+
+        ConfigIdentityModel(modelBuilder);
+    }
+
+    private void ConfigTenantFilter(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Item>(entity =>
         {
             entity.HasQueryFilter(e => e.TenantId == _tenantId);
         });
+    }
 
+    private void ConfigIdentityModel(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<User>(entity =>
         {
             entity.ToTable(name: "Users");
