@@ -73,3 +73,36 @@ Tye is an orchestrator that can be used to develop distributed applications. It 
 Services are declared in ```tye.yaml```.
 
 It also makes it easy to deploy services to Kubernetes.
+
+## Set up Azurite Storage Emulator
+To publicly expose Blobs via their URLs you have to change Azurite's configuration.
+
+(This requires Azurite to have been run once for the files to be created)
+
+Open the file ``.data/azurite/__azurite_db_blob__.json``:
+
+Add the ``"publicAccess": "blob"`` key-value in the ``image`` container section shown below:
+
+```json
+{
+    "name": "$CONTAINERS_COLLECTION$",
+    "data": [
+        {
+            "accountName": "devstoreaccount1",
+            "name": "images",
+            "properties": {
+                "etag": "\"0x1C839AE6CDF11F0\"",
+                "lastModified": "2021-05-14T15:08:51.726Z",
+                "leaseStatus": "unlocked",
+                "leaseState": "available",
+                "hasImmutabilityPolicy": false,
+                "hasLegalHold": false,
+           -->  "publicAccess": "blob" <-- 
+            },
+            // Omitted
+},
+```
+
+Then, restart Azurite.
+
+Just restart the whole system. Exit Tye, and restart it.

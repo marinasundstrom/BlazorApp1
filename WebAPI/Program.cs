@@ -4,8 +4,6 @@ using Azure.Storage.Blobs;
 using BlazorApp1.Application;
 using BlazorApp1.Application.Services;
 using BlazorApp1.Infrastructure;
-using BlazorApp1.Infrastructure.Persistence;
-using BlazorApp1.Infrastructure.Persistence.Configurations;
 using BlazorApp1.WebAPI;
 using BlazorApp1.WebAPI.Hubs;
 using BlazorApp1.WebAPI.Services;
@@ -171,5 +169,9 @@ app.MapReverseProxy();
 app.MapFallbackToFile("index.html");
 
 await SeedData.EnsureSeedData(app);
+
+var blobServiceClient = app.Services.GetRequiredService<BlobServiceClient>();
+var client = blobServiceClient.GetBlobContainerClient("images");
+await client.CreateIfNotExistsAsync();
 
 app.Run();
