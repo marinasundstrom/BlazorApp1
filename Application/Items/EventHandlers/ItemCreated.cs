@@ -25,12 +25,13 @@ public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotificat
 
     public async Task Handle(DomainEventNotification<ItemCreatedEvent> notification, CancellationToken cancellationToken)
     {
-        await _emailService.SendEmail("test@email.com", "Item created", "This is a <b>test</b>.");
-
         var item = await _context.Items
+            .IncludeAll()
             .IgnoreQueryFilters()
             .FirstAsync(i => i.Id == notification.DomainEvent.ItemId, cancellationToken);
 
-        await _itemsNotifier.NotifyImageUploaded(item.Id, _urlHelper.CreateImageUrl(item.Id)!);
+        await _itemsNotifier.NotifyItemAdded(item.ToDto(_urlHelper));
+
+        await _emailService.SendEmail("test@email.com", "Item created", "This is a <b>test</b>.");
     }
 }
