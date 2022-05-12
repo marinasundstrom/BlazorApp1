@@ -19,7 +19,7 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(ConnectionStringKey);
+        var connectionString = configuration.GetConnectionString(ConnectionStringKey, "BlazorApp1");
 
         services.AddScoped<MyInterceptor>();
 

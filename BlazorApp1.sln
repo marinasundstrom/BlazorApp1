@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{893527AA-6A2B-49C5-AF33-63E0695052DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{893527AA-6A2B-49C5-AF33-63E0695052DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApp", "ClientApp\ClientApp.csproj", "{B273DB15-4D31-44CC-ACD0-93AE7D93C0A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApp", "ClientApp\ClientApp.csproj", "{B273DB15-4D31-44CC-ACD0-93AE7D93C0A5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker", "Worker\Worker.csproj", "{F0A45FC5-FBF1-47D8-AC9D-AC87817CE9F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{F0A45FC5-FBF1-47D8-AC9D-AC87817CE9F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Worker.Contracts", "Worker.Contracts\Worker.Contracts.csproj", "{06DF8A6E-9896-4C9D-8789-5A3D46A7B059}"
 EndProject
@@ -23,6 +23,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{694C1339-4E13-4A71-BC50-8C6B72CBC5A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{B7D95DC9-1277-49DA-AF5D-3758B13CAD7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documents", "Documents\Documents.csproj", "{7B17B7AE-D8F5-4C46-8CE6-ECA8A05F5743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documents.Contracts", "Documents.Contracts\Documents.Contracts.csproj", "{15D1FBBF-47EE-4B91-824C-AA7652509EDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +66,14 @@ Global
 		{B7D95DC9-1277-49DA-AF5D-3758B13CAD7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7D95DC9-1277-49DA-AF5D-3758B13CAD7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7D95DC9-1277-49DA-AF5D-3758B13CAD7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B17B7AE-D8F5-4C46-8CE6-ECA8A05F5743}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B17B7AE-D8F5-4C46-8CE6-ECA8A05F5743}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B17B7AE-D8F5-4C46-8CE6-ECA8A05F5743}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B17B7AE-D8F5-4C46-8CE6-ECA8A05F5743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D1FBBF-47EE-4B91-824C-AA7652509EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D1FBBF-47EE-4B91-824C-AA7652509EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D1FBBF-47EE-4B91-824C-AA7652509EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D1FBBF-47EE-4B91-824C-AA7652509EDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

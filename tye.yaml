@@ -28,6 +28,16 @@ services:
     protocol: https
     port: 5021
 
+- name: documents
+  project: Documents/Documents.csproj
+  bindings:
+  - name: http
+    protocol: http
+    port: 5030
+  - name: https
+    protocol: https
+    port: 5031
+
 - name: sqlserver
   image: mcr.microsoft.com/azure-sql-edge:latest
   env:
@@ -39,7 +49,7 @@ services:
     value: "Y"
   bindings:
     - port: 1433
-      connectionString: Server=${host},${port};User Id=sa;Password=${env:MSSQL_SA_PASSWORD};Database=BlazorApp1;
+      connectionString: Server=${host},${port};User Id=sa;Password=${env:MSSQL_SA_PASSWORD};
   volumes:
     - source: .data/sql-edge
       target: /var/opt/mssql/data
