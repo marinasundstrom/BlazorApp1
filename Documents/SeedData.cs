@@ -36,6 +36,22 @@ Hello, @Model.Name!"
 
                 context.DocumentTemplates.Add(documentTemplate);
 
+                documentTemplate = new DocumentTemplate()
+                {
+                    Id = "letter",
+                    Name = "Letter",
+                    TemplateLanguage = DocumentTemplateLanguage.Razor,
+                    Content =
+@$"
+@model dynamic
+
+<p>Hi, @Model.Name!</p>
+
+<p>We would love to hear your feedback on the quality of our services.</p>"
+                };
+
+                context.DocumentTemplates.Add(documentTemplate);
+
                 await context.SaveChangesAsync();
             }
         }
