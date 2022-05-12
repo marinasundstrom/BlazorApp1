@@ -45,6 +45,12 @@ Hello, @Model.Name!"
 @$"
 @model dynamic
 
+<style>
+    body {{
+        font-family: 'Helvetica', 'Arial', sans-serif;
+    }}
+</style>
+
 <p>Hi, @Model.Name!</p>
 
 <p>We would love to hear your feedback on the quality of our services.</p>"

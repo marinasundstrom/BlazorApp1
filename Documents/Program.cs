@@ -10,6 +10,7 @@ using Documents.Contracts;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using MassTransit.MessageData;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,11 +67,13 @@ await SeedData.EnsureSeedData(app);
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapPost("/createdoc", async (string templateId, [FromBody] string model, IRequestClient<CreateDocumentFromTemplate> requestClient) =>
+app.MapPost("/createdoc", async (string templateId, [FromBody] string model, IEmailService emailService, IRequestClient<CreateDocumentFromTemplate> requestClient) =>
 {
     var result = await requestClient.GetResponse<DocumentResponse>(new CreateDocumentFromTemplate(templateId, DocumentFormat.Html, JsonConvert.SerializeObject(model)));
     var message = result.Message;
-    return Results.File(await message.Document.Value, message.DocumentFormat == DocumentFormat.Html ? "application/html" : "application/pdf");
+    var data = await message.Document.Value;
+    await emailService.SendEmail("test@test.com", "Test", Encoding.UTF8.GetString((data)));
+    return Results.File(data, message.DocumentFormat == DocumentFormat.Html ? "application/html" : "application/pdf");
 })
         .WithName("Greetings_Hi")
         .WithTags("Greetings")
