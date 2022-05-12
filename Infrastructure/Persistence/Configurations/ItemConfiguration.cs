@@ -14,6 +14,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
         // NOTE: Defined in ApplicationDbContext to allow for multi-tenancy.
         // builder.HasQueryFilter(i => i.Deleted == null);
 
+        builder.HasIndex(nameof(Item.TenantId));
+
         builder.Ignore(i => i.DomainEvents);
     }
 }
