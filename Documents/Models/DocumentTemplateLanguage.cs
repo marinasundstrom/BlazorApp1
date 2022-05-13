@@ -2,5 +2,5 @@
 
 public enum DocumentTemplateLanguage
 {
-    Razor
+    Razor = 1
 }

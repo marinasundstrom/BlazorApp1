@@ -1,7 +1,7 @@
-namespace Documents.Contracts;
+﻿namespace Documents.Contracts;
 
 public enum DocumentFormat
 {
-    Html,
-    Pdf
+    Html = 1,
+    Pdf = 2
 }
