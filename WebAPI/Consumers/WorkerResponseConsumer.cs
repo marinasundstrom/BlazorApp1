@@ -20,7 +20,7 @@ public class WorkerResponseConsumer : IConsumer<WorkerResponse>
     {
         var response = context.Message;
 
-        var ev = new ResponseReceivedEvent(response.Text);
+        var ev = new ResponseReceived(response.Text);
         ev.IsPublished = true;
 
         await _domainEventService.Publish(ev);

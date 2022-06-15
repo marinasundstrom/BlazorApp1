@@ -9,6 +9,8 @@ namespace BlazorApp1.Application.Common
     {
         DbSet<Item> Items { get; set; }
 
+        DbSet<Comment> Comments { get; set; }
+
         DbSet<Status> Statuses { get; set; }
 
         DbSet<User> Users { get; set; }

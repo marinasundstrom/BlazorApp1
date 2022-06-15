@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.Commands;
 
-public record CreateItemCommand(string Name, string Description, int StatusId) : IRequest<Result<ItemDto, Exception>>
+public record CreateItem(string Name, string Description, int StatusId) : IRequest<Result<ItemDto, Exception>>
 {
-    public class Handler : IRequestHandler<CreateItemCommand, Result<ItemDto, Exception>>
+    public class Handler : IRequestHandler<CreateItem, Result<ItemDto, Exception>>
     {
         private readonly IApplicationDbContext context;
         private readonly IUrlHelper _urlHelper;
@@ -22,20 +22,11 @@ public record CreateItemCommand(string Name, string Description, int StatusId) :
             _urlHelper = urlHelper;
         }
 
-        public async Task<Result<ItemDto, Exception>> Handle(CreateItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ItemDto, Exception>> Handle(CreateItem request, CancellationToken cancellationToken)
         {
-            var item = new Item()
-            {
-                Name = request.Name,
-                Description = request.Description,
-                StatusId = request.StatusId
-            };
-
-            item.Id = Guider.ToUrlFriendlyString(Guid.Parse(item.Id));
+            var item = new Item(request.Name, request.Description, request.StatusId);
 
             context.Items.Add(item);
-
-            item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
 
             await context.SaveChangesAsync(cancellationToken);
 

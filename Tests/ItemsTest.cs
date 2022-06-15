@@ -54,13 +54,13 @@ public class ItemsTest
             Name = "Created"
         });
 
-        var commandHandler = new CreateItemCommand.Handler(context, fakeUrlHelper);
+        var commandHandler = new CreateItem.Handler(context, fakeUrlHelper);
 
         var initialHandoverCount = await context.Items.CountAsync();
 
         // Act
 
-        var createItemCommand = new CreateItemCommand("Test", "Blah", 1);
+        var createItemCommand = new CreateItem("Test", "Blah", 1);
 
         ItemDto item = await commandHandler.Handle(createItemCommand, default);
 
@@ -74,7 +74,7 @@ public class ItemsTest
 
         await fakeDomainEventService
             .Received(1)
-            .Publish(Arg.Is<ItemCreatedEvent>(d => d.ItemId == item.Id));
+            .Publish(Arg.Is<ItemCreated>(d => d.ItemId == item.Id));
     }
 
     private static User CreateTestUser()

@@ -138,6 +138,9 @@
   <data name="Header_Name" xml:space="preserve">
     <value>Namn</value>
   </data>
+  <data name="Header_Text" xml:space="preserve">
+    <value>Text</value>
+  </data>
   <data name="Items" xml:space="preserve">
     <value>Föremål</value>
   </data>

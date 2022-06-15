@@ -27,7 +27,7 @@ public class StatusesController : ControllerBase
     [ProducesDefaultResponseType]
     public async Task<ActionResult<IEnumerable<StatusDto>>> GetStatuses()
     {
-        return Ok(await mediator.Send(new GetStatusesQuery()));
+        return Ok(await mediator.Send(new GetStatuses()));
     }
 
 }

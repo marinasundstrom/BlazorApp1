@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.EventHandlers;
 
-public class ItemImageUploadedEventHandler : INotificationHandler<DomainEventNotification<ItemImageUploadedEvent>>
+public class ItemImageUploadedEventHandler : INotificationHandler<DomainEventNotification<ItemImageUploaded>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IUrlHelper _urlHelper;
@@ -21,7 +21,7 @@ public class ItemImageUploadedEventHandler : INotificationHandler<DomainEventNot
         _itemsNotifier = itemsNotifier;
     }
 
-    public async Task Handle(DomainEventNotification<ItemImageUploadedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ItemImageUploaded> notification, CancellationToken cancellationToken)
     {
         var domainEvent = notification.DomainEvent;
 

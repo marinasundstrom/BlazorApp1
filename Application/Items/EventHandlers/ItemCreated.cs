@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.EventHandlers;
 
-public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotification<ItemCreatedEvent>>
+public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotification<ItemCreated>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
@@ -23,7 +23,7 @@ public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotificat
         _urlHelper = urlHelper;
     }
 
-    public async Task Handle(DomainEventNotification<ItemCreatedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ItemCreated> notification, CancellationToken cancellationToken)
     {
         var item = await _context.Items
             .IncludeAll()

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace BlazorApp1.Application.Items.EventHandlers;
 
-public class ResponseReceivedEventHandler : INotificationHandler<DomainEventNotification<ResponseReceivedEvent>>
+public class ResponseReceivedEventHandler : INotificationHandler<DomainEventNotification<ResponseReceived>>
 {
     private readonly INotifier _notifier;
 
@@ -14,7 +14,7 @@ public class ResponseReceivedEventHandler : INotificationHandler<DomainEventNoti
         _notifier = notifier;
     }
 
-    public async Task Handle(DomainEventNotification<ResponseReceivedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ResponseReceived> notification, CancellationToken cancellationToken)
     {
         var message = notification.DomainEvent.Message;
         await _notifier.Notify(message);

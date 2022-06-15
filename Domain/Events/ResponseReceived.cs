@@ -2,9 +2,9 @@
 
 namespace BlazorApp1.Domain.Events;
 
-public class ResponseReceivedEvent : DomainEvent
+public class ResponseReceived : DomainEvent
 {
-    public ResponseReceivedEvent(string message)
+    public ResponseReceived(string message)
     {
         Message = message;
     }

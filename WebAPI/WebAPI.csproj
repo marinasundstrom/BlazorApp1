@@ -15,6 +15,7 @@
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'WebAPI' " />
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,6 +48,6 @@
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.12.0" />
 		<PackageReference Include="Microsoft.Extensions.Azure" Version="1.1.1" />
         <PackageReference Include="Yarp.ReverseProxy" Version="1.1.0" />
-    </ItemGroup> 
+    </ItemGroup>
 
 </Project>

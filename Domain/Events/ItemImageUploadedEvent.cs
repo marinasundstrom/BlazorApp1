@@ -1,8 +1,8 @@
 namespace BlazorApp1.Domain.Events;
 
-public class ItemImageUploadedEvent : DomainEvent
+public class ItemImageUploaded : DomainEvent
 {
-    public ItemImageUploadedEvent(string itemId, string imageUri)
+    public ItemImageUploaded(string itemId, string imageUri)
     {
         ItemId = itemId;
         ImageUri = imageUri;

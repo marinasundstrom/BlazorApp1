@@ -1,7 +1,7 @@
 ﻿using System.Buffers.Text;
 using System.Runtime.InteropServices;
 
-namespace BlazorApp1.Application;
+namespace Utils;
 
 // Nick Chapsas code
 public static class Guider

@@ -3,6 +3,7 @@
 @inject IStringLocalizer<ItemsPage> T
 @inject IStringLocalizer<Resources.App> T2
 @inject IItemsClient ItemsClient
+@inject IStatusesClient StatusesClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject ICurrentUserService CurrentUserService
@@ -15,12 +16,12 @@
     <MudButton @onclick="NewItem" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
         @T["NewItem"]
     </MudButton>
-    
+
     <MudCheckBox Label="@T["JustMyItems"]" CheckedChanged="new Func<bool, Task>(OnJustMyItemsCheckedChanged)" Checked="justMyItems" />
 
     <MudCheckBox Label="@T["SelectMultiple"]" @bind-Checked="selectMultiple" />
-        
-    @if(selectedItems.Count > 0) 
+
+    @if (selectedItems.Count > 0)
     {
         <MudButton @onclick="DeleteSelectedItems" Variant="Variant.Filled" StartIcon="@Icons.Filled.Delete" Color="Color.Primary" Class="ms-2 mb-2 mt-2">
             @T["DeleteSelected"]
@@ -30,6 +31,16 @@
 
 
 <MudTable T="ItemDto" MultiSelection="@selectMultiple" @bind-SelectedItems="selectedItems" Elevation="25" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="ItemClicked" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info" class="mt-4">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudSelect T="StatusDto?" Label="Filter by Status" MultiSelection="true" @bind-Value="Status" SelectedValues="selectedStatuses" SelectedValuesChanged="OnSelectedStatusesChanged" ToStringFunc="i => T2[i.Name]" Class="mt-0">
+            @foreach (var status in statuses)
+            {
+                <MudSelectItem T="StatusDto?" Value="@status">@T2[status.Name]</MudSelectItem>
+            }
+        </MudSelect>
+    </ToolBarContent>
+
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">@T["Header_Name"]</MudTableSortLabel></MudTh>
@@ -38,12 +49,12 @@
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
         @*<MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">@T["Header_LastModified"]</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">@T["Header_LastModifiedBy"]</MudTableSortLabel></MudTh>*@
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">@T["Header_LastModifiedBy"]</MudTableSortLabel></MudTh>*@
         <MudTh></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd>
-            @if (context.Image is not null) 
+            @if (context.Image is not null)
             {
                 <MudImage Src="@context.Image" Alt="Item picture" Width="100" Class="rounded-lg" />
             }
@@ -54,7 +65,7 @@
         <MudTd DataLabel="@T["Header_Created"]">@context.Created.ToString("g")</MudTd>
         <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy</MudTd>
         @*<MudTd DataLabel="@T["Header_LastModified"]">@context.LastModified?.ToString("g")</MudTd>
-        <MudTd DataLabel="@T["Header_LastModifiedBy"]">@context.LastModifiedBy</MudTd>*@
+            <MudTd DataLabel="@T["Header_LastModifiedBy"]">@context.LastModifiedBy</MudTd>*@
         <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
     </RowTemplate>
     <NoRecordsContent>
@@ -74,12 +85,20 @@
     bool justMyItems;
     bool selectMultiple;
     private HashSet<ItemDto> selectedItems = new HashSet<ItemDto>();
+    StatusDto? Status;
+    IEnumerable<StatusDto?> selectedStatuses = new List<StatusDto?>();
+    IEnumerable<StatusDto>? statuses = Array.Empty<StatusDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        statuses = await StatusesClient.GetStatusesAsync();
+    }
 
     private async Task<TableData<ItemDto>> ServerReload(TableState state)
     {
         try
         {
-            var results = await ItemsClient.GetItemsAsync(state.Page + 1, state.PageSize, createdBy,
+            var results = await ItemsClient.GetItemsAsync(state.Page + 1, state.PageSize, selectedStatuses?.Select(x => x.Id), createdBy,
                 state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Client.SortDirection.Asc : Client.SortDirection.Desc);
 
             return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
@@ -112,7 +131,7 @@
 
     private void ItemClicked(TableRowClickEventArgs<ItemDto> args)
     {
-        if(selectMultiple) 
+        if (selectMultiple)
         {
             return;
         }
@@ -135,17 +154,17 @@
         try
         {
             var item = await ItemsClient.CreateItemAsync(new CreateItemDto()
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    StatusId = model.Status.Id
-                });
+            {
+                Name = model.Name,
+                Description = model.Description,
+                StatusId = model.Status.Id
+            });
 
-            if(model.Stream is not null)
+            if (model.Stream is not null)
             {
                 await ItemsClient.UploadImageAsync(item.Id, new FileParameter(model.Stream, model.FileName, model.ContentType));
             }
-            
+
             await table.ReloadServerData();
         }
         catch (Exception exc)
@@ -171,9 +190,9 @@
         {
             exception.Redirect();
         }
-        catch(Exception)
+        catch (Exception)
         {
-            Snackbar.Add(T["FailedToDeleteItem"], Severity.Error);   
+            Snackbar.Add(T["FailedToDeleteItem"], Severity.Error);
         }
     }
 
@@ -184,7 +203,7 @@
         selectedItems.Remove(item);
     }
 
-    private async Task DeleteSelectedItems() 
+    private async Task DeleteSelectedItems()
     {
         try
         {
@@ -194,7 +213,7 @@
             {
                 List<ItemDto>? failedItems = null;
 
-                foreach(var item in selectedItems)
+                foreach (var item in selectedItems)
                 {
                     try
                     {
@@ -206,9 +225,9 @@
                     {
                         exception.Redirect();
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
-                        if(failedItems is null)
+                        if (failedItems is null)
                         {
                             failedItems = new List<ItemDto>();
                         }
@@ -217,11 +236,11 @@
                     }
                 }
 
-                if(failedItems?.Any() ?? false)
+                if (failedItems?.Any() ?? false)
                 {
-                    Snackbar.Add(T["FailedToDeleteItems", failedItems!.Count()], Severity.Error);      
+                    Snackbar.Add(T["FailedToDeleteItems", failedItems!.Count()], Severity.Error);
                 }
-                
+
                 await table.ReloadServerData();
 
                 StateHasChanged();
@@ -231,5 +250,11 @@
         {
             exception.Redirect();
         }
+    }
+
+    private async Task OnSelectedStatusesChanged(IEnumerable<StatusDto?> selectedValues)
+    {
+        selectedStatuses = selectedValues;
+        await table.ReloadServerData();
     }
 }

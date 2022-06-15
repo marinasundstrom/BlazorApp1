@@ -57,7 +57,9 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddTransient<IProfileService, MyProfileService>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson();
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddHttpContextAccessor();

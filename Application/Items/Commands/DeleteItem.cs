@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.Commands;
 
-public record DeleteItemCommand(string Id) : IRequest
+public record DeleteItem(string Id) : IRequest
 {
-    public class Handler : IRequestHandler<DeleteItemCommand>
+    public class Handler : IRequestHandler<DeleteItem>
     {
         private readonly IApplicationDbContext context;
 
@@ -18,7 +18,7 @@ public record DeleteItemCommand(string Id) : IRequest
             this.context = context;
         }
 
-        public async Task<Unit> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteItem request, CancellationToken cancellationToken)
         {
             var item = await context.Items.FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
@@ -29,7 +29,7 @@ public record DeleteItemCommand(string Id) : IRequest
 
             context.Items.Remove(item);
 
-            item.DomainEvents.Add(new ItemDeletedEvent(item.Id));
+            item.DomainEvents.Add(new ItemDeleted(item.Id));
 
             await context.SaveChangesAsync(cancellationToken);
 

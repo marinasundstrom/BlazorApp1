@@ -7,11 +7,13 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
+using Utils;
+
 namespace BlazorApp1.Application.Items.Commands;
 
-public record UploadItemImageCommand(string Id, Stream Stream, string FileName, string ContentType) : IRequest<UploadImageResult>
+public record UploadItemImage(string Id, Stream Stream, string FileName, string ContentType) : IRequest<UploadImageResult>
 {
-    public class UploadItemImageCommandHandler : IRequestHandler<UploadItemImageCommand, UploadImageResult>
+    public class UploadItemImageCommandHandler : IRequestHandler<UploadItemImage, UploadImageResult>
     {
         private readonly IApplicationDbContext context;
         private readonly IFileUploaderService _fileUploaderService;
@@ -22,7 +24,7 @@ public record UploadItemImageCommand(string Id, Stream Stream, string FileName, 
             this._fileUploaderService = fileUploaderService;
         }
 
-        public async Task<UploadImageResult> Handle(UploadItemImageCommand request, CancellationToken cancellationToken)
+        public async Task<UploadImageResult> Handle(UploadItemImage request, CancellationToken cancellationToken)
         {
             var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
@@ -39,7 +41,7 @@ public record UploadItemImageCommand(string Id, Stream Stream, string FileName, 
 
             item.ImageId = imageId;
 
-            item.DomainEvents.Add(new ItemImageUploadedEvent(item.Id, null!));
+            item.DomainEvents.Add(new ItemImageUploaded(item.Id, null!));
 
             await context.SaveChangesAsync(cancellationToken);
 

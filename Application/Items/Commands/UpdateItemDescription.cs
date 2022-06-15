@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.Commands;
 
-public record UpdateItemDescriptionCommand(string Id, string Description) : IRequest
+public record UpdateItemDescription(string Id, string Description) : IRequest
 {
-    public class Handler : IRequestHandler<UpdateItemDescriptionCommand>
+    public class Handler : IRequestHandler<UpdateItemDescription>
     {
         private readonly IApplicationDbContext context;
 
@@ -18,7 +18,7 @@ public record UpdateItemDescriptionCommand(string Id, string Description) : IReq
             this.context = context;
         }
 
-        public async Task<Unit> Handle(UpdateItemDescriptionCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateItemDescription request, CancellationToken cancellationToken)
         {
             var item = await context.Items.FirstOrDefaultAsync(item => item.Id == request.Id, cancellationToken);
 
@@ -27,9 +27,7 @@ public record UpdateItemDescriptionCommand(string Id, string Description) : IReq
                 throw new Exception();
             }
 
-            item.Description = request.Description;
-
-            item.DomainEvents.Add(new ItemUpdatedEvent(item.Id));
+            item.SetDescription(request.Description);
 
             await context.SaveChangesAsync(cancellationToken);
 

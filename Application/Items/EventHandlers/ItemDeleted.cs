@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BlazorApp1.Application.Items.EventHandlers;
 
-public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotification<ItemDeletedEvent>>
+public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotification<ItemDeleted>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IFileUploaderService _fileUploaderService;
@@ -21,7 +21,7 @@ public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotificat
         _itemsNotifier = itemsNotifier;
     }
 
-    public async Task Handle(DomainEventNotification<ItemDeletedEvent> notification, CancellationToken cancellationToken)
+    public async Task Handle(DomainEventNotification<ItemDeleted> notification, CancellationToken cancellationToken)
     {
         var item = await _context.Items
             .IgnoreQueryFilters()

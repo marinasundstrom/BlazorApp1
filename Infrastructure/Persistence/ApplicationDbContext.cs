@@ -46,6 +46,8 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
 
     public DbSet<Item> Items { get; set; }
 
+    public DbSet<Comment> Comments { get; set; }
+
     public DbSet<Status> Statuses { get; set; }
 
     public DbSet<PersistedGrant> PersistedGrants { get; set; }
@@ -72,6 +74,11 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
     private void ConfigTenantFilter(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Item>(entity =>
+        {
+            entity.HasQueryFilter(e => e.TenantId == _tenantId && e.Deleted == null);
+        });
+
+        modelBuilder.Entity<Comment>(entity =>
         {
             entity.HasQueryFilter(e => e.TenantId == _tenantId && e.Deleted == null);
         });

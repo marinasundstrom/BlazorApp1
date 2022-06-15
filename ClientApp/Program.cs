@@ -57,6 +57,9 @@ builder.Services.AddHttpClient<BlazorApp1.Client.IItemsClient>("WebAPI")
 builder.Services.AddHttpClient<BlazorApp1.Client.IStatusesClient>("WebAPI")
     .AddTypedClient<IStatusesClient>((http, sp) => new StatusesClient(http));
 
+builder.Services.AddHttpClient<BlazorApp1.Client.ICommentsClient>("WebAPI")
+    .AddTypedClient<ICommentsClient>((http, sp) => new CommentsClient(http));
+
 var app = builder.Build();
 
 await Localize(app.Services);
