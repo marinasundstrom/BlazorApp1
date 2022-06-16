@@ -173,10 +173,10 @@
   </data>
   <data name="DeleteSelected" xml:space="preserve">
     <value>Delete selected</value>
-  </data> 
+  </data>
   <data name="DeleteSelectedItems" xml:space="preserve">
     <value>Delete selected items</value>
-  </data> 
+  </data>
   <data name="FailedToDeleteItem" xml:space="preserve">
     <value>Failed to delete item.</value>
   </data>
@@ -200,5 +200,8 @@
   </data>
   <data name="StatusUpdatedFailed" xml:space="preserve">
     <value>Failed to update status.</value>
+  </data>
+  <data name="NewComment" xml:space="preserve">
+    <value>New comment</value>
   </data>
 </root>

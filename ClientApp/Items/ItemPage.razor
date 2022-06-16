@@ -65,7 +65,7 @@ else
 
     <MudTable T="CommentDto" Elevation="25" Bordered="false" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<CommentDto>>>(ServerReload))" OnRowClick="CommentClicked" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info" class="mt-4">
         <HeaderContent>
-            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Description">@T["Header_Text"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Text">@T["Header_Text"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
             @*<MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">@T["Header_LastModified"]</MudTableSortLabel></MudTh>

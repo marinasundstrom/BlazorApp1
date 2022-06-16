@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject IStringLocalizer<NewItemDialog> T
+@inject IStringLocalizer<CommentDialog> T3
 @inject IStringLocalizer<Resources.App> T2
 @inject IStatusesClient StatusesClient
 @inject ISnackbar Snackbar
@@ -10,14 +11,14 @@
         <DataAnnotationsValidator />
         <MudDialog>
             <DialogContent>
-                <MudTextField Label="@T["Text"]" Lines="3" Class="mt-3" @bind-Value="model.Text"
+                <MudTextField Label="@T3["Text"]" Lines="3" Class="mt-3" @bind-Value="model.Text"
                     For="@(() => model.Text)" />    
             </DialogContent>
 
             <DialogActions>
                 <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="() => MudDialog.Cancel()">
-                    @T["Cancel"]</MudButton>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Text" Color="Color.Primary">@T["Create"]
+                    @T3["Cancel"]</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Text" Color="Color.Primary">@T3["Post"]
                 </MudButton>
             </DialogActions>
         </MudDialog>

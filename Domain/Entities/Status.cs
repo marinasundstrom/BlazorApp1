@@ -1,6 +1,6 @@
 ﻿namespace BlazorApp1.Domain;
 
-public class Status : IHasDomainEvent
+public class Status : IHasDomainEvents
 {
     public int Id { get; set; }
 

@@ -13,13 +13,8 @@ using Duende.IdentityServer.EntityFramework.Options;
 
 using Microsoft.EntityFrameworkCore;
 
-using NSubstitute;
 
-using Shouldly;
-
-using Xunit;
-
-namespace Tests;
+namespace BlazorApp1.Application.Tests;
 
 public class ItemsTest
 {

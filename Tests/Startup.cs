@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Tests;
+namespace BlazorApp1.Application.Tests;
 
 public class Startup
 {

@@ -4,7 +4,7 @@ using Utils;
 
 namespace BlazorApp1.Domain;
 
-public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent, IHasTenant
+public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
 {
     private readonly HashSet<Comment> _comments = new HashSet<Comment>();
 
@@ -15,7 +15,6 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent, IHasTenant
 
     public Item(string name, string description, int statusId)
     {
-        Id = Guider.ToUrlFriendlyString(Guid.NewGuid());
         Name = name;
         Description = description;
         StatusId = statusId;
@@ -23,7 +22,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent, IHasTenant
         DomainEvents.Add(new ItemCreated(Id));
     }
 
-    public string Id { get; private set; }
+    public string Id { get; private set; } = Guider.ToUrlFriendlyString(Guid.NewGuid());
 
     public string TenantId { get; set; } = null!;
 

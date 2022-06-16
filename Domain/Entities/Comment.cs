@@ -4,7 +4,7 @@ using Utils;
 
 namespace BlazorApp1.Domain;
 
-public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvent, IHasTenant
+public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
 {
     private Comment()
     {
