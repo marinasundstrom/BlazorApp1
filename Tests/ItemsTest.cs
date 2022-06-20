@@ -1,22 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using BlazorApp1.Application.Common;
 using BlazorApp1.Application.Items;
 using BlazorApp1.Application.Items.Commands;
-using BlazorApp1.Application.Services;
-using BlazorApp1.Domain;
+using BlazorApp1.Domain.Entities;
 using BlazorApp1.Domain.Events;
-using BlazorApp1.Infrastructure.Persistence;
-
-using Duende.IdentityServer.EntityFramework.Options;
 
 using Microsoft.EntityFrameworkCore;
 
 
 namespace BlazorApp1.Application.Tests;
 
-public class ItemsTest
+public class ItemsTest : TestBase
 {
     [Fact]
     public async Task CreateItem_ItemCreated()
@@ -25,21 +20,9 @@ public class ItemsTest
 
         User user = CreateTestUser();
 
-        var fakeDomainEventService = Substitute.For<IDomainEventService>();
+        _fakeCurrentUserService.UserId.Returns(x => user.Id);
 
-        var fakeCurrentUserService = Substitute.For<ICurrentUserService>();
-        fakeCurrentUserService.UserId.Returns(x => user.Id);
-
-        var fakeDateTimeService = Substitute.For<IDateTimeService>();
-        fakeDateTimeService.Now.Returns(x => DateTime.Now);
-
-        var fakeUrlHelper = Substitute.For<IUrlHelper>();
-        fakeUrlHelper.CreateImageUrl(Arg.Any<string>()).Returns(x => $"http://image/{x.Arg<string>()}");
-
-        var fakeTenantService = Substitute.For<ITenantService>();
-        fakeTenantService.TenantId.Returns(x => "1");
-
-        using IApplicationDbContext context = CreateDbContext(fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService, fakeTenantService);
+        using IApplicationDbContext context = CreateDbContext(_fakeTenantService);
 
         context.Users.Add(user);
 
@@ -49,7 +32,7 @@ public class ItemsTest
             Name = "Created"
         });
 
-        var commandHandler = new CreateItem.Handler(context, fakeUrlHelper);
+        var commandHandler = new CreateItem.Handler(context, _fakeUrlHelper);
 
         var initialHandoverCount = await context.Items.CountAsync();
 
@@ -67,33 +50,8 @@ public class ItemsTest
 
         // Has Domain Event been published ?
 
-        await fakeDomainEventService
+        await _fakeDomainEventService
             .Received(1)
             .Publish(Arg.Is<ItemCreated>(d => d.ItemId == item.Id));
-    }
-
-    private static User CreateTestUser()
-    {
-        return new BlazorApp1.Domain.User
-        {
-            Id = Guid.NewGuid().ToString(),
-            UserName = "test@email.com",
-            NormalizedUserName = "TEST@EMAIL.COM"
-        };
-    }
-
-    private static IApplicationDbContext CreateDbContext(IDomainEventService fakeDomainEventService, ICurrentUserService fakeCurrentUserService, IDateTimeService fakeDateTimeService, ITenantService fakeTenantService)
-    {
-        var duendeOptions = Substitute.For<Microsoft.Extensions.Options.IOptions<OperationalStoreOptions>>();
-        duendeOptions.Value.Returns(x => new OperationalStoreOptions()
-        {
-            DeviceFlowCodes = new TableConfiguration("DeviceCodes")
-        });
-
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-           .UseInMemoryDatabase(databaseName: "Test")
-           .Options;
-
-        return new ApplicationDbContext(options, duendeOptions, fakeDomainEventService, fakeCurrentUserService, fakeDateTimeService, fakeTenantService);
     }
 }

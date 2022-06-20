@@ -1,9 +1,4 @@
-﻿using BlazorApp1.Domain;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace BlazorApp1.Infrastructure.Persistence.Configurations;
+﻿namespace BlazorApp1.Infrastructure.Persistence.Configurations;
 
 public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {
@@ -15,7 +10,5 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         // builder.HasQueryFilter(i => i.Deleted == null);
 
         builder.HasIndex(nameof(Comment.TenantId));
-
-        builder.Ignore(i => i.DomainEvents);
     }
 }

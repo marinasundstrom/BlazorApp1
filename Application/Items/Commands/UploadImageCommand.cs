@@ -1,8 +1,4 @@
 ﻿
-using BlazorApp1.Application.Common;
-using BlazorApp1.Application.Services;
-using BlazorApp1.Domain.Events;
-
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +37,7 @@ public record UploadItemImage(string Id, Stream Stream, string FileName, string 
 
             item.ImageId = imageId;
 
-            item.DomainEvents.Add(new ItemImageUploaded(item.Id, null!));
+            item.AddDomainEvent(new ItemImageUploaded(item.Id, null!));
 
             await context.SaveChangesAsync(cancellationToken);
 

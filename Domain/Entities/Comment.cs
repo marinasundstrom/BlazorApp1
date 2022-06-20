@@ -1,10 +1,9 @@
-﻿using BlazorApp1.Domain.Events;
-
+﻿
 using Utils;
 
-namespace BlazorApp1.Domain;
+namespace BlazorApp1.Domain.Entities;
 
-public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
+public class Comment : BaseAuditableEntity, ISoftDelete, IHasTenant
 {
     private Comment()
     {
@@ -15,7 +14,7 @@ public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenan
     {
         Text = text;
 
-        DomainEvents.Add(new CommentCreated(Id));
+        AddDomainEvent(new CommentCreated(Id));
     }
 
     public string Id { get; private set; } = Guider.ToUrlFriendlyString(Guid.NewGuid());
@@ -28,7 +27,7 @@ public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenan
 
     public void UpdateText(string text)
     {
-        if(text != Text)
+        if (text != Text)
         {
             Text = text;
 
@@ -40,7 +39,7 @@ public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenan
     {
         if (!DomainEvents.OfType<CommentUpdated>().Any())
         {
-            DomainEvents.Add(new CommentUpdated(Id));
+            AddDomainEvent(new CommentUpdated(Id));
         }
     }
 
@@ -49,7 +48,5 @@ public class Comment : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenan
     public string? DeletedById { get; set; }
 
     public User? DeletedBy { get; set; }
-
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 
 }

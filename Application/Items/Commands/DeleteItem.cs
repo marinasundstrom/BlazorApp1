@@ -1,6 +1,4 @@
-﻿using BlazorApp1.Application.Common;
-using BlazorApp1.Domain.Events;
-
+﻿
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +27,7 @@ public record DeleteItem(string Id) : IRequest
 
             context.Items.Remove(item);
 
-            item.DomainEvents.Add(new ItemDeleted(item.Id));
+            item.AddDomainEvent(new ItemDeleted(item.Id));
 
             await context.SaveChangesAsync(cancellationToken);
 

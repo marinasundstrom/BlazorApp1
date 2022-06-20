@@ -1,6 +1,4 @@
-﻿using BlazorApp1.Application.Common;
-using BlazorApp1.Domain.Events;
-
+﻿
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;

@@ -2,11 +2,11 @@
 
 using BlazorApp1.Application.Common;
 using BlazorApp1.Application.Services;
-using BlazorApp1.Domain;
+using BlazorApp1.Domain.Entities;
 using BlazorApp1.Infrastructure.Persistence;
+using BlazorApp1.Infrastructure.Persistence.Interceptors;
 using BlazorApp1.Infrastructure.Services;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +33,8 @@ public static class ServiceExtensions
         });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
         AddIdentity(services);
 

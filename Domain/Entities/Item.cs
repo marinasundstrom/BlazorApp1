@@ -1,10 +1,9 @@
-﻿using BlazorApp1.Domain.Events;
-
+﻿
 using Utils;
 
-namespace BlazorApp1.Domain;
+namespace BlazorApp1.Domain.Entities;
 
-public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
+public class Item : BaseAuditableEntity, ISoftDelete, IHasTenant
 {
     private readonly HashSet<Comment> _comments = new HashSet<Comment>();
 
@@ -19,7 +18,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
         Description = description;
         StatusId = statusId;
 
-        DomainEvents.Add(new ItemCreated(Id));
+        AddDomainEvent(new ItemCreated(Id));
     }
 
     public string Id { get; private set; } = Guider.ToUrlFriendlyString(Guid.NewGuid());
@@ -42,7 +41,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
 
     public void SetDescription(string description)
     {
-        if(description != Description)
+        if (description != Description)
         {
             Description = description;
 
@@ -52,10 +51,10 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
 
     private void OnUpdated()
     {
-        if(!DomainEvents.OfType<ItemUpdated>().Any())
+        if (!DomainEvents.OfType<ItemUpdated>().Any())
         {
-            DomainEvents.Add(new ItemUpdated(Id));
-        }        
+            AddDomainEvent(new ItemUpdated(Id));
+        }
     }
 
     public Status Status { get; private set; } = null!;
@@ -73,7 +72,7 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
     {
         StatusId = newStatus;
 
-        DomainEvents.Add(new ItemStatusUpdated(Id, StatusId));
+        AddDomainEvent(new ItemStatusUpdated(Id, StatusId));
         OnUpdated();
     }
 
@@ -84,13 +83,13 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
     public void AddComment(Comment comment)
     {
         _comments.Add(comment);
-        comment.DomainEvents.Add(new CommentCreated(comment.Id));
-    } 
+        AddDomainEvent(new CommentCreated(comment.Id));
+    }
 
     public void RemoveComment(Comment comment)
     {
         _comments.Remove(comment);
-        comment.DomainEvents.Add(new CommentDeleted(comment.Id));
+        AddDomainEvent(new CommentDeleted(comment.Id));
     }
 
     public DateTime? Deleted { get; set; }
@@ -98,6 +97,4 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvents, IHasTenant
     public string? DeletedById { get; set; }
 
     public User? DeletedBy { get; set; }
-
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

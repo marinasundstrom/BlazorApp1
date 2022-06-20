@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-using BlazorApp1.Domain;
+using BlazorApp1.Domain.Entities;
 using BlazorApp1.Infrastructure.Persistence;
 
 using IdentityModel;

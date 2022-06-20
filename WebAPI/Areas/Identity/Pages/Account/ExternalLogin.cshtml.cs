@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
-using BlazorApp1.Domain;
+using BlazorApp1.Domain.Entities;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -224,8 +224,8 @@ namespace BlazorApp1.WebAPI.Areas.Identity.Pages.Account
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(Domain.User)}'. " +
-                    $"Ensure that '{nameof(Domain.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(Domain.Entities.User)}'. " +
+                    $"Ensure that '{nameof(Domain.Entities.User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
             }
         }

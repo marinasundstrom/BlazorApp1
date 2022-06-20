@@ -18,16 +18,4 @@
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Comments\" />
-    <None Remove="Comments\Commands\" />
-    <None Remove="Comments\EventHandlers\" />
-    <None Remove="Comments\Queries\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Comments\" />
-    <Folder Include="Comments\Commands\" />
-    <Folder Include="Comments\EventHandlers\" />
-    <Folder Include="Comments\Queries\" />
-  </ItemGroup>
 </Project>

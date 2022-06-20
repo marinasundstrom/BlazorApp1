@@ -1,6 +1,4 @@
 ﻿using BlazorApp1.Application.Items;
-using BlazorApp1.Application.Services;
-using BlazorApp1.Domain;
 
 namespace BlazorApp1.Application.Comments;
 
